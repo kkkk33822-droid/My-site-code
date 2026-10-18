@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>免费资源站</title>
     <style>
+        /* ===== 基础重置 ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -15,7 +16,7 @@
         img { display: block; width: 100%; height: 100%; object-fit: cover; }
         ::-webkit-scrollbar { display: none; }
 
-        /* ============ 顶部播报公告 ============ */
+        /* ===== 顶部播报公告 ===== */
         .top-notice { 
             background-color: #16161e; 
             padding: 4px 0; 
@@ -36,7 +37,7 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* 顶部横幅（紧凑） */
+        /* ===== 顶部横幅（保持两排） ===== */
         .top-banners { display: flex; gap: 6px; padding: 6px 10px 0 10px; }
         .banner-item {
             flex: 1; height: 30px; border-radius: 15px;
@@ -49,6 +50,7 @@
         .banner-hot { background: linear-gradient(90deg, #ff8c00, #ffb347); }
         .banner-anime { background: linear-gradient(90deg, #4b3b7b, #6b5b9b); border: 1px solid #5a4a8a; }
         .banner-comic { background: linear-gradient(90deg, #1e3a8a, #3b82f6); }
+        
         .second-banners { display: flex; gap: 6px; padding: 4px 10px 6px 10px; }
         .second-banners .banner-item { background: #1c1c26; border: 1px solid #2a2a3a; height: 30px; }
         .second-banners .banner-item:nth-child(2) { background: linear-gradient(90deg, #3b4b6b, #4b5b7b); border: none; }
@@ -63,7 +65,7 @@
             border-radius: 1px;
         }
 
-        /* 搜索区（紧凑） */
+        /* ===== 搜索区 ===== */
         .search-section { padding: 0 10px 4px 10px; }
         .search-box { display: flex; background: #fff; border-radius: 6px; overflow: hidden; height: 34px; }
         .search-icon { display: flex; align-items: center; justify-content: center; width: 34px; color: #666; font-size: 14px; }
@@ -71,10 +73,7 @@
         .search-btn { background: #ffb347; color: #5a3a00; border: none; padding: 0 12px; font-weight: bold; font-size: 12px; border-radius: 6px; margin: 3px; cursor: pointer; }
         
         .search-hint { 
-            text-align: center; 
-            font-size: 10px; 
-            color: #888; 
-            margin-top: 2px; 
+            text-align: center; font-size: 10px; color: #888; margin-top: 2px; 
             animation: pulseSize 1.5s infinite ease-in-out;
             display: flex; align-items: center; justify-content: center; gap: 4px;
         }
@@ -106,22 +105,45 @@
         .search-alert .btn-unlock { display: inline-block; background: #ffffff; color: #e53935; border: none; border-radius: 14px; padding: 6px 20px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.15); transition: transform .15s; }
         .search-alert .btn-unlock:active { transform: scale(.95); }
 
-        /* 在线人数（极紧凑） */
+        /* ===== 在线人数（已单独加上圆圈包裹和绿点） ===== */
+        .online-wrapper {
+            display: flex; 
+            justify-content: center; 
+            margin: 6px 10px 8px 10px; /* 调整了边距 */
+        }
         .online-bar { 
-            display: flex; align-items: center; justify-content: center; 
-            gap: 4px; padding: 2px 10px; font-size: 11px; color: #ccc; 
-            background: #16161e; margin: 0 10px 6px 10px; border-radius: 4px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            padding: 5px 16px; 
+            font-size: 12px; 
+            color: #ccc; 
+            background: #1c1c26; 
+            border-radius: 20px; /* 圆圈包裹 */
+            border: 1px solid #333; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .online-icon { font-size: 12px; }
+        .online-icon { font-size: 13px; }
         .online-num { 
-            color: #ffcc00; font-weight: bold; font-size: 13px;
-            display: inline-block; min-width: 40px; text-align: center; transition: color .3s; 
-            text-shadow: 0 0 4px rgba(255, 204, 0, 0.4);
+            color: #ffcc00; font-weight: 900; font-size: 14px;
+            display: inline-block; min-width: 36px; text-align: center; 
+            letter-spacing: 0.5px;
         }
-        .online-num.up   { color: #4ade80 !important; text-shadow: 0 0 4px rgba(74, 222, 128, 0.4); }
-        .online-num.down { color: #f87171 !important; text-shadow: 0 0 4px rgba(248, 113, 113, 0.4); }
+        /* 绿色呼吸灯圆点 */
+        .online-dot {
+            width: 8px; height: 8px;
+            background-color: #4ade80;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #4ade80;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
 
-        /* 分类标题栏（极紧凑） */
+        /* ===== 分类标题栏 ===== */
         .cat-bar { display: flex; align-items: center; padding: 0 10px 4px 10px; gap: 4px; }
         .cat-bar .icon {
             width: 16px; height: 16px;
@@ -135,16 +157,16 @@
 
         .content-area { padding: 0; }
 
-        /* ============ 2列 ============ */
+        /* ===== 2列卡片（保持你之前满意的适度放大尺寸） ===== */
         .grid-2 { 
             display: grid; 
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 4px; 
-            padding: 0 4px; 
+            gap: 8px; 
+            padding: 0 8px; 
         }
         .card-wide { 
             background: #1a1a24; 
-            border-radius: 4px; 
+            border-radius: 6px; 
             overflow: hidden; 
             cursor: pointer; 
             transition: transform .15s; 
@@ -154,19 +176,19 @@
         .card-wide .thumb { 
             position: relative; 
             width: 100%; 
-            aspect-ratio: 3 / 1;
+            aspect-ratio: 3 / 1; /* 3:1 比例 */
             background: #333; 
         }
         .card-wide .tag { 
-            position: absolute; top: 2px; left: 2px; 
+            position: absolute; top: 4px; left: 4px; 
             background: #e55c5c; color: #fff; 
-            font-size: 7px; padding: 1px 3px; 
-            border-radius: 2px; z-index: 2; 
+            font-size: 9px; padding: 2px 5px; 
+            border-radius: 3px; z-index: 2; 
         }
         .card-wide .play-btn { 
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%); 
-            width: 18px; height: 18px; 
+            width: 22px; height: 22px; 
             background: rgba(255,255,255,.35); 
             border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
@@ -174,43 +196,43 @@
         }
         .card-wide .play-btn::after { 
             content: ''; width: 0; height: 0; 
-            border-top: 3px solid transparent; 
-            border-bottom: 3px solid transparent; 
-            border-left: 6px solid #fff; 
-            margin-left: 2px; 
+            border-top: 4px solid transparent; 
+            border-bottom: 4px solid transparent; 
+            border-left: 7px solid #fff; 
+            margin-left: 3px; 
         }
         .card-wide .dur { 
-            position: absolute; bottom: 2px; right: 2px; 
+            position: absolute; bottom: 4px; right: 4px; 
             background: rgba(0,0,0,.6); color: #fff; 
-            font-size: 7px; padding: 1px 3px; 
-            border-radius: 2px; z-index: 2; 
+            font-size: 9px; padding: 2px 4px; 
+            border-radius: 3px; z-index: 2; 
         }
         .card-wide .stat { 
-            position: absolute; bottom: 2px; left: 2px; 
-            display: flex; align-items: center; gap: 2px; 
-            font-size: 7px; color: #ddd; z-index: 2; 
+            position: absolute; bottom: 4px; left: 4px; 
+            display: flex; align-items: center; gap: 3px; 
+            font-size: 9px; color: #ddd; z-index: 2; 
         }
         .card-wide .finished { 
-            position: absolute; bottom: 2px; right: 2px; 
+            position: absolute; bottom: 4px; right: 4px; 
             background: rgba(0,0,0,.7); color: #fff; 
-            font-size: 7px; padding: 1px 4px; 
-            border-radius: 2px; z-index: 2; 
+            font-size: 9px; padding: 2px 6px; 
+            border-radius: 3px; z-index: 2; 
         }
         .card-wide .name { 
-            font-size: 9px; color: #eee; 
-            padding: 3px 3px; 
+            font-size: 12px; 
+            color: #eee; 
+            padding: 6px 5px; 
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-            line-height: 1.2; 
+            line-height: 1.3; 
         }
 
-        /* 软件/资源 4列 */
+        /* ===== 其他分类（软件/资源/游戏） ===== */
         .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 0 4px; }
         .card-square { background: #1a1a24; border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
         .card-square .thumb { width: 100%; aspect-ratio: 1 / 1; background: #fff; }
         .card-square .name { font-size: 9px; color: #eee; padding: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-square .btn { margin: 2px; background: linear-gradient(90deg, #ff9800, #ffb74d); color: #fff; font-size: 8px; font-weight: bold; text-align: center; padding: 3px 0; border-radius: 6px; }
 
-        /* 3列游戏 */
         .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 0 4px; }
         .card-game { background: #1a1a24; border-radius: 4px; overflow: hidden; cursor: pointer; transition: transform .15s; }
         .card-game .thumb { position: relative; width: 100%; aspect-ratio: 4 / 3; background: #333; }
@@ -220,6 +242,7 @@
         .card-game .name { font-size: 9px; color: #eee; padding: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-game .btn { margin: 2px; background: linear-gradient(90deg, #00bcd4, #26c6da); color: #fff; font-size: 8px; font-weight: bold; text-align: center; padding: 3px 0; border-radius: 6px; }
 
+        /* ===== 分页 & 底部导航 ===== */
         .pagination { display: flex; justify-content: center; align-items: center; gap: 4px; padding: 8px 0 16px 0; flex-wrap: wrap; }
         .page-item { min-width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #aaa; cursor: pointer; }
         .page-item.active { background: #ff9800; color: #fff; font-weight: bold; }
@@ -232,13 +255,14 @@
         .nav-item.center { transform: translateY(-4px); }
         .nav-item.center .nav-icon { width: 34px; height: 34px; background: linear-gradient(135deg,#a855f7,#ec4899); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 6px rgba(168,85,247,.4); border: 2px solid #16161e; }
 
+        /* ===== 悬浮按钮 ===== */
         .floating-btns { position: fixed; right: 6px; bottom: 100px; display: flex; flex-direction: column; gap: 6px; z-index: 99; }
         .float-btn { width: 28px; height: 28px; background: rgba(30, 30, 40, 0.85); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #ccc; border: 1px solid #3a3a4a; cursor: pointer; }
         .float-btn.ai-btn { background: #d6e4ff; color: #2d6cff; border: none; font-size: 10px; font-weight: bold; }
         .float-btn.close-btn { background: rgba(120, 120, 130, 0.85); color: #fff; }
         .float-dot { position: fixed; right: 6px; bottom: 40px; width: 32px; height: 32px; background: linear-gradient(135deg, #4facfe, #00c6fb); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; }
 
-        /* 弹窗部分 */
+        /* ===== 弹窗 ===== */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
         .modal-overlay.show { display: flex; }
         .modal-box { width: 100%; max-width: 320px; background: #fff; border-radius: 16px; padding: 20px 16px 16px; position: relative; animation: popIn .25s ease; color: #222; }
@@ -259,6 +283,7 @@
         .modal-footer { text-align: center; font-size: 11px; color: #ff9800; background: #fff7e6; border: 1px dashed #ffcc80; border-radius: 16px; padding: 6px; }
         .modal-footer #modalCount { color: #ff6b00; font-weight: bold; transition: color .3s; }
 
+        /* ===== 欢迎弹窗 ===== */
         .welcome-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 24px; }
         .welcome-overlay.show { display: flex; }
         .welcome-box { width: 100%; max-width: 340px; background: linear-gradient(180deg, #fff5f7 0%, #ffffff 100%); border-radius: 18px; padding: 24px 20px 20px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.35); animation: welcomePop .35s ease; color: #333; }
@@ -270,6 +295,7 @@
         .welcome-box .btn-confirm { display: block; width: 100%; background: linear-gradient(90deg, #f06292, #ec407a); color: #fff; border: none; border-radius: 25px; padding: 12px 0; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 6px; letter-spacing: 4px; box-shadow: 0 4px 12px rgba(236,64,122,.35); transition: transform .15s; }
         .welcome-box .btn-confirm:active { transform: scale(.97); }
 
+        /* ===== 右下角通知 ===== */
         .toast-container { position: fixed; right: 8px; bottom: 90px; display: flex; flex-direction: column-reverse; gap: 6px; z-index: 9998; pointer-events: none; }
         .toast-item { display: flex; align-items: center; gap: 6px; background: rgba(30, 30, 40, 0.95); color: #fff; padding: 6px 12px 6px 6px; border-radius: 24px; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,.3); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.1); transform: translateY(20px); opacity: 0; transition: all .4s ease; max-width: 240px; pointer-events: auto; }
         .toast-item.show { transform: translateY(0); opacity: 1; }
@@ -287,6 +313,7 @@
         </div>
     </div>
 
+    <!-- 顶部两排分类 -->
     <div class="top-banners">
         <div class="banner-item banner-hot active" data-cat="hot">🔥 热门</div>
         <div class="banner-item banner-anime" data-cat="anime">📺 动漫</div>
@@ -298,6 +325,7 @@
         <div class="banner-item" data-cat="game">🏆 游戏</div>
     </div>
 
+    <!-- 搜索框 -->
     <div class="search-section">
         <div class="search-box">
             <div class="search-icon">🔍</div>
@@ -314,8 +342,13 @@
         </div>
     </div>
 
-    <div class="online-bar">
-        <span class="online-icon">👥</span> 当前在线：<strong class="online-num" id="onlineNum">1963</strong> 人 🟢
+    <!-- 实时在线人数（已加圆圈包裹） -->
+    <div class="online-wrapper">
+        <div class="online-bar">
+            <span class="online-icon">👥</span> 当前在线：
+            <strong class="online-num" id="onlineNum">1963</strong> 人
+            <div class="online-dot"></div>
+        </div>
     </div>
 
     <div class="cat-bar">
@@ -328,6 +361,7 @@
 
     <div class="pagination" id="pagination"></div>
 
+    <!-- 底部导航 -->
     <div class="bottom-nav">
         <div class="nav-item active" data-nav="home"><div class="nav-icon">🏠</div><span>首页</span></div>
         <div class="nav-item" data-nav="circle"><div class="nav-icon">🎨</div><span>圈子</span></div>
@@ -347,6 +381,7 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- 弹窗 -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
             <button class="modal-close" id="modalClose">✕</button>
@@ -371,6 +406,7 @@
         </div>
     </div>
 
+    <!-- 欢迎提示弹窗 -->
     <div class="welcome-overlay" id="welcomeOverlay">
         <div class="welcome-box">
             <div class="title">提示</div>
@@ -420,7 +456,6 @@
             { name: '平台热门推荐，观众热度超高',    dur: '00:43:26', views: '8.45W',  img: 'https://zy.bbkk.mom/img/56.jpg?v=20261017' },
             { name: '会员专属片单，会员专享内容',    dur: '00:21:49', views: '5.91W',  img: 'https://zy.bbkk.mom/img/57.jpg?v=20261017' },
             { name: 'VIP专属片库，随时点开观看',     dur: '00:19:36', views: '10.52W', img: 'https://zy.bbkk.mom/img/58.jpg?v=20261017' },
-            // 新增的 10 个窗口，已换成真实图片链接
             { name: '我的母亲',                      dur: '00:15:20', views: '1.20W',  img: 'https://zy.bbkk.mom/img/75.jpg?v=20261017' },
             { name: '约而过家家',                    dur: '00:18:30', views: '2.50W',  img: 'https://zy.bbkk.mom/img/76.jpg?v=20261017' },
             { name: '催眠之岛',                      dur: '00:22:15', views: '3.10W',  img: 'https://zy.bbkk.mom/img/77.jpg?v=20261017' },
@@ -729,10 +764,6 @@
             if (currentOnline > 2500) currentOnline = 2500;
 
             onlineNum.textContent = currentOnline;
-            onlineNum.classList.remove('up', 'down');
-            if (delta > 0) onlineNum.classList.add('up');
-            else if (delta < 0) onlineNum.classList.add('down');
-
             setTimeout(tickOnline, 1000 + Math.random() * 2000);
         }
         tickOnline();
