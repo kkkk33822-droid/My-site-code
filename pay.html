@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>支付审核 - 获取资源</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #f5f6fa; color: #222;
+            min-height: 100vh;
+            padding: 20px 0 30px;
+        }
+        ::-webkit-scrollbar { display: none; }
+
+        .pay-card {
+            background: #fff;
+            border-radius: 20px;
+            margin: 0 14px;
+            padding: 26px 18px 22px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.05);
+        }
+
+        .pay-title {
+            text-align: center;
+            font-size: 22px; font-weight: 900;
+            color: #1a1a2e; letter-spacing: 1px;
+            display: flex; align-items: center;
+            justify-content: center; gap: 6px;
+        }
+        .pay-title .star { font-size: 18px; color: #6c5ce7; }
+        .pay-subtitle {
+            text-align: center; font-size: 12px; color: #888;
+            margin-top: 10px;
+            background: #f5f5f8;
+            display: inline-block;
+            padding: 5px 14px; border-radius: 14px;
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* 二维码区 */
+        .qr-section {
+            margin-top: 22px;
+            background: #f0f2f5;
+            border-radius: 14px;
+            padding: 14px 10px;
+        }
+        .qr-inner {
+            background: #fff; border-radius: 10px;
+            padding: 24px 20px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .qr-inner::before,
+        .qr-inner::after {
+            content: ''; position: absolute; top: 0;
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #d0d5dd;
+        }
+        .qr-inner::before { left: 10px; }
+        .qr-inner::after  { right: 10px; }
+
+        .qr-code-box {
+            width: 180px; height: 180px;
+            margin: 0 auto 16px;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        /* 初始遮罩（防自动扫描） */
+        .qr-placeholder {
+            position: absolute; inset: 0;
+            background: #f8f9fb;
+            border: 2px dashed #dcdde1;
+            border-radius: 10px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10;
+            transition: all .3s;
+        }
+        .qr-placeholder:hover { background: #f1f2f6; border-color: #a4b0be; }
+        .qr-placeholder svg { width: 40px; height: 40px; fill: #a4b0be; margin-bottom: 10px; }
+        .qr-placeholder .text { font-size: 13px; color: #747d8c; font-weight: bold; }
+        
+        /* 真实二维码图片 */
+        .qr-img {
+            width: 100%; height: 100%; object-fit: contain;
+            border-radius: 8px; display: none;
+        }
+
+        .qr-name {
+            font-size: 16px; color: #333;
+            margin-bottom: 20px; font-weight: 500;
+        }
+
+        .qr-banner {
+            margin: 0 -20px;
+            background: linear-gradient(90deg, #e8c365, #d4a73a);
+            color: #fff; font-size: 14px; font-weight: bold;
+            padding: 12px 0; text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* 操作按钮组 */
+        .action-btns {
+            display: flex; gap: 10px; margin-top: 14px;
+        }
+        .btn-refresh-dark, .btn-save-qr {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; flex: 1;
+            border: none; border-radius: 25px;
+            padding: 13px 0; font-size: 14px; font-weight: bold;
+            cursor: pointer; transition: background .2s;
+        }
+        .btn-refresh-dark { background: #1f3a4d; color: #fff; }
+        .btn-refresh-dark:active { background: #152a39; }
+        
+        .btn-save-qr { background: #00b894; color: #fff; }
+        .btn-save-qr:active { background: #009473; }
+
+        .warn-yellow {
+            text-align: center; font-size: 12px;
+            color: #c59b0f; margin-top: 10px;
+        }
+        .warn-red-box {
+            background: #f5e8ff; color: #c0392b;
+            font-size: 13px; font-weight: bold;
+            text-align: center; padding: 12px;
+            border-radius: 10px; margin-top: 16px;
+        }
+
+        /* 上传区 */
+        .upload-zone {
+            display: block;
+            border: 2px dashed #c8cfe0;
+            border-radius: 16px;
+            padding: 30px 16px 22px;
+            text-align: center;
+            background: #fff;
+            margin-top: 18px;
+            position: relative;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .upload-zone:hover { border-color: #6c5ce7; background: #faf8ff; }
+        .upload-zone .upload-icon { font-size: 36px; margin-bottom: 12px; }
+        .upload-zone .upload-title {
+            font-size: 15px; font-weight: bold; color: #1a1a2e;
+        }
+        .upload-zone .upload-title .star { color: #6c5ce7; }
+        .upload-zone .upload-hint {
+            font-size: 12px; color: #999; margin-top: 6px;
+        }
+        .upload-zone input[type="file"] {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            opacity: 0; cursor: pointer;
+        }
+
+        /* 预览 */
+        .upload-preview {
+            display: none;
+            margin-top: 14px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            position: relative;
+        }
+        .upload-preview.show { display: block; }
+        .upload-preview img { width: 100%; display: block; }
+        .upload-preview .re-upload {
+            position: absolute; bottom: 8px; right: 8px;
+            background: rgba(0,0,0,.65); color: #fff;
+            border: none; border-radius: 16px;
+            padding: 5px 12px; font-size: 12px; cursor: pointer;
+        }
+
+        /* 提交按钮 */
+        .btn-submit {
+            display: block; width: 100%;
+            background: #c8cdd6; color: #fff;
+            border: none; border-radius: 26px;
+            padding: 15px 0; font-size: 16px; font-weight: bold;
+            margin-top: 14px; cursor: not-allowed;
+            transition: all .3s;
+        }
+        .btn-submit.active {
+            background: linear-gradient(90deg, #7b2ff7, #2d6cff);
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(123,47,247,.35);
+        }
+        .btn-submit.active:active { opacity: .85; }
+
+        .bottom-tip {
+            font-size: 12px; text-align: center;
+            padding: 10px 12px; border-radius: 10px;
+            margin-top: 14px; line-height: 1.5;
+        }
+        .bottom-tip.pink { background: #ffe9f0; color: #e0447a; }
+        .bottom-tip.gray { background: #eef0f4; color: #666; }
+
+        /* Loading */
+        .loading-mask {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.6);
+            display: none; align-items: center; justify-content: center;
+            z-index: 9999;
+            color: #fff; font-size: 15px;
+            flex-direction: column; gap: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .loading-mask.show { display: flex; }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255,255,255,.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-mask .tip { font-size: 12px; opacity: .8; }
+
+        /* 保存二维码弹窗 */
+        .save-modal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.85);
+            display: none; align-items: center; justify-content: center;
+            flex-direction: column;
+            z-index: 10000; padding: 20px;
+        }
+        .save-modal.show { display: flex; }
+        .save-modal .save-tip {
+            color: #fff; font-size: 16px; font-weight: bold;
+            margin-bottom: 20px; background: rgba(255,255,255,.2);
+            padding: 10px 24px; border-radius: 20px;
+        }
+        .save-modal img {
+            width: 85%; max-width: 320px; border-radius: 12px;
+            background: #fff; padding: 12px; display: block;
+        }
+        .save-modal .save-warn {
+            color: #ffb74d; font-size: 14px; margin-top: 20px;
+        }
+        .save-modal .close-save {
+            margin-top: 25px; background: #fff; color: #333;
+            border: none; padding: 12px 50px; border-radius: 25px;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pay-card">
+        <!-- 标题 -->
+        <div class="pay-title">
+            <span class="star">✦</span>
+            支付19.90元获取资源
+            <span class="star">✦</span>
+        </div>
+        <div style="text-align:center;">
+            <div class="pay-subtitle">🤖 AI审核 · 上传真实支付截图获取资源</div>
+        </div>
+
+        <!-- 二维码区 -->
+        <div class="qr-section">
+            <div class="qr-inner">
+                <div class="qr-code-box">
+                    <div class="qr-placeholder" id="qrPlaceholder">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        <div class="text">点击获取最新二维码</div>
+                    </div>
+                    <img class="qr-img" id="qrImg" src="https://s41.ax1x.com/2026/10/18/pnwgFDx.jpg" alt="收款码">
+                </div>
+                <div class="qr-name">“土豪专享”</div>
+                <div class="qr-banner">渐变的赞赏码</div>
+            </div>
+        </div>
+
+        <!-- 操作按钮组 -->
+        <div class="action-btns">
+            <button class="btn-refresh-dark" id="btnRefreshQR">🔄 刷新二维码</button>
+            <button class="btn-save-qr" id="btnSaveQR">💾 保存二维码</button>
+        </div>
+
+        <div class="warn-yellow">⚠ 如无法加载，请刷新页面重试</div>
+        <div class="warn-red-box">⚠ 如果收款码不能支付，请点击刷新二维码</div>
+
+        <!-- 上传区 -->
+        <label class="upload-zone" for="fileInput" id="uploadZone">
+            <div class="upload-icon">🖼️</div>
+            <div class="upload-title">
+                <span class="star">✦</span> 上传支付截图（AI 智能审核） <span class="star">✦</span>
+            </div>
+            <div class="upload-hint">JPG · PNG · WEBP · GIF（≤ 12MB）</div>
+            <input type="file" id="fileInput" accept="image/*">
+        </label>
+
+        <div class="upload-preview" id="uploadPreview">
+            <img id="previewImg" src="" alt="预览">
+            <button class="re-upload" id="btnReUpload">重新上传</button>
+        </div>
+
+        <button class="btn-submit" id="btnSubmit" disabled>提交支付截图，立即领取资源</button>
+
+        <div class="bottom-tip pink">💡 上传支付截图 → AI自动审核（虚假截图会被拉黑IP和设备，请不要尝试作假）</div>
+        <div class="bottom-tip gray">⚠ 如遇异常跳转，请用 Chrome 浏览器打开并关闭加速器/安全软件</div>
+    </div>
+
+    <!-- 保存二维码弹窗 -->
+    <div class="save-modal" id="saveModal">
+        <div class="save-tip">👇 长按下方二维码保存至相册</div>
+        <img id="saveImg" src="https://s41.ax1x.com/2026/10/18/pnwgFDx.jpg" alt="长按保存">
+        <div class="save-warn">⚠ 如果无法保存，请直接截图保存</div>
+        <button class="close-save" id="btnCloseSave">我知道了</button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-mask" id="loadingMask">
+        <div class="spinner"></div>
+        <div id="loadingText">正在提交，请稍候...</div>
+        <div class="tip" id="loadingTip">AI 正在审核你的支付截图</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+    <script>
+        // ==================== 审核配置 ====================
+        // 1. 金额匹配池
+        const AMOUNT_KEYWORDS = ['19.90', '19.9', '¥19.90', '￥19.90'];
+        
+        // 2. 成功特征池（必须是支付成功界面特有的词）
+        const SUCCESS_KEYWORDS = ['支付成功', '转账成功', '交易成功', '已收款', '已存入零钱', '账单详情', '当前状态'];
+        
+        // 3. 作弊黑名单（如果出现这些词，说明是收款码或商品页）
+        const BLACK_LIST = ['推荐使用支付宝', '扫一扫', '收款码', '收款方', '保存二维码'];
+
+        // ==================== DOM 元素 ====================
+        const fileInput = document.getElementById('fileInput');
+        const uploadPreview = document.getElementById('uploadPreview');
+        const previewImg = document.getElementById('previewImg');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const loadingMask = document.getElementById('loadingMask');
+        const loadingText = document.getElementById('loadingText');
+        const loadingTip = document.getElementById('loadingTip');
+        
+        const qrPlaceholder = document.getElementById('qrPlaceholder');
+        const qrImg = document.getElementById('qrImg');
+        const btnRefreshQR = document.getElementById('btnRefreshQR');
+        
+        const btnSaveQR = document.getElementById('btnSaveQR');
+        const saveModal = document.getElementById('saveModal');
+        const btnCloseSave = document.getElementById('btnCloseSave');
+
+        let currentFile = null;
+
+        // ==================== 二维码点击与刷新逻辑 ====================
+        qrPlaceholder.addEventListener('click', () => {
+            qrPlaceholder.style.display = 'none';
+            qrImg.style.display = 'block';
+        });
+
+        btnRefreshQR.addEventListener('click', () => {
+            qrImg.style.display = 'none';
+            qrPlaceholder.style.display = 'flex';
+            qrImg.src = 'https://s41.ax1x.com/2026/10/18/pnwgFDx.jpg?t=' + Date.now();
+            setTimeout(() => {
+                qrPlaceholder.style.display = 'none';
+                qrImg.style.display = 'block';
+            }, 500);
+        });
+
+        // ==================== 保存二维码逻辑 ====================
+        btnSaveQR.addEventListener('click', () => {
+            saveModal.classList.add('show');
+        });
+        btnCloseSave.addEventListener('click', () => {
+            saveModal.classList.remove('show');
+        });
+
+        // ==================== 选择文件 ====================
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('请上传图片文件');
+                fileInput.value = '';
+                return;
+            }
+            if (file.size > 12 * 1024 * 1024) {
+                alert('图片不能超过 12MB');
+                fileInput.value = '';
+                return;
+            }
+
+            currentFile = file;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                previewImg.src = ev.target.result;
+                uploadPreview.classList.add('show');
+                btnSubmit.classList.add('active');
+                btnSubmit.disabled = false;
+            };
+            reader.readAsDataURL(file);
+
+            fileInput.value = '';
+        });
+
+        // ==================== 重新上传 ====================
+        document.getElementById('btnReUpload').addEventListener('click', (e) => {
+            e.preventDefault();
+            fileInput.click();
+        });
+
+        // ==================== OCR 审核核心 ====================
+        async function runOCR(file) {
+            const { data: { text } } = await Tesseract.recognize(file, 'chi_sim+eng');
+            return text;
+        }
+
+        function checkText(text) {
+            // 去掉所有空格和换行
+            const normalized = text.replace(/\s+/g, '');
+
+            // 1. 黑名单检测（防作弊）
+            for (let badWord of BLACK_LIST) {
+                if (normalized.includes(badWord)) {
+                    return { 
+                        pass: false, 
+                        reason: '检测到收款码/非付款截图，请上传支付成功后的截图' 
+                    };
+                }
+            }
+
+            // 2. 金额匹配
+            const amountHit = AMOUNT_KEYWORDS.find(k => normalized.includes(k.replace(/\s+/g, '')));
+
+            // 3. 成功特征匹配
+            const successHit = SUCCESS_KEYWORDS.find(k => normalized.includes(k));
+
+            // 必须同时满足：有金额 + 有成功特征
+            return {
+                pass: !!amountHit && !!successHit,
+                amountHit: amountHit || null,
+                successHit: successHit || null,
+                reason: (!amountHit || !successHit) ? '未匹配到正确的金额或成功状态' : ''
+            };
+        }
+
+        // ==================== 提交 ====================
+        btnSubmit.addEventListener('click', async () => {
+            if (!currentFile) {
+                alert('请先上传支付截图');
+                return;
+            }
+
+            loadingMask.classList.add('show');
+            loadingText.textContent = 'AI 正在审核中...';
+            loadingTip.textContent = '正在识别截图文字，请勿关闭页面';
+
+            try {
+                const text = await runOCR(currentFile);
+                const result = checkText(text);
+
+                console.log('OCR 识别结果：\n', text);
+                console.log('校验结果：', result);
+
+                if (result.pass) {
+                    loadingText.textContent = '审核通过，正在发放资源...';
+                    loadingTip.textContent = '即将跳转';
+                    setTimeout(() => {
+                        location.href = 'success.html';
+                    }, 1200);
+                } else {
+                    loadingMask.classList.remove('show');
+                    // 现在即使失败，也不直接暴露具体原因，防止用户针对性造假
+                    alert(
+                        '❌ 后台未通过审核\n\n' +
+                        '您上传的截图无法通过系统验证，请确认上传的是真实有效的支付成功截图。\n\n' +
+                        '如有疑问请联系客服。'
+                    );
+                }
+            } catch (err) {
+                console.error('OCR 出错：', err);
+                loadingMask.classList.remove('show');
+                alert('审核服务暂时不可用，请稍后重试');
+            }
+        });
+    </script>
+</body>
+</html>

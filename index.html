@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>免费资源站</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0d0d12; color: #fff;
+            padding-bottom: 60px; overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        ::-webkit-scrollbar { display: none; }
+
+        /* ============ 顶部播报公告 ============ */
+        .top-notice { 
+            background-color: #16161e; 
+            padding: 4px 0; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            position: relative;
+        }
+        .top-notice-content {
+            display: inline-block;
+            font-size: 11px; 
+            color: #a0a0b0;
+            animation: marquee 12s linear infinite;
+            padding-left: 100%;
+        }
+        .top-notice-content span { color: #e5a93d; font-weight: bold; }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* 顶部横幅（紧凑） */
+        .top-banners { display: flex; gap: 6px; padding: 6px 10px 0 10px; }
+        .banner-item {
+            flex: 1; height: 30px; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 4px; font-size: 12px; font-weight: bold; color: #fff;
+            cursor: pointer; transition: transform .15s;
+            position: relative;
+        }
+        .banner-item:active { transform: scale(.96); }
+        .banner-hot { background: linear-gradient(90deg, #ff8c00, #ffb347); }
+        .banner-anime { background: linear-gradient(90deg, #4b3b7b, #6b5b9b); border: 1px solid #5a4a8a; }
+        .banner-comic { background: linear-gradient(90deg, #1e3a8a, #3b82f6); }
+        .second-banners { display: flex; gap: 6px; padding: 4px 10px 6px 10px; }
+        .second-banners .banner-item { background: #1c1c26; border: 1px solid #2a2a3a; height: 30px; }
+        .second-banners .banner-item:nth-child(2) { background: linear-gradient(90deg, #3b4b6b, #4b5b7b); border: none; }
+        .second-banners .banner-item:nth-child(3) { background: linear-gradient(90deg, #5b4b3b, #7b6b4b); border: none; }
+
+        .banner-item.active::after {
+            content: '';
+            position: absolute;
+            left: 10px; right: 10px; bottom: -4px;
+            height: 2px;
+            background: #ffb347;
+            border-radius: 1px;
+        }
+
+        /* 搜索区（紧凑） */
+        .search-section { padding: 0 10px 4px 10px; }
+        .search-box { display: flex; background: #fff; border-radius: 6px; overflow: hidden; height: 34px; }
+        .search-icon { display: flex; align-items: center; justify-content: center; width: 34px; color: #666; font-size: 14px; }
+        .search-box input { flex: 1; border: none; outline: none; font-size: 12px; color: #333; background: transparent; }
+        .search-btn { background: #ffb347; color: #5a3a00; border: none; padding: 0 12px; font-weight: bold; font-size: 12px; border-radius: 6px; margin: 3px; cursor: pointer; }
+        
+        .search-hint { 
+            text-align: center; 
+            font-size: 10px; 
+            color: #888; 
+            margin-top: 2px; 
+            animation: pulseSize 1.5s infinite ease-in-out;
+            display: flex; align-items: center; justify-content: center; gap: 4px;
+        }
+        .search-hint span { color: #e5a93d; }
+        @keyframes pulseSize {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; color: #e5a93d; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .search-alert {
+            display: none;
+            margin: 8px 0 0 0;
+            background: linear-gradient(90deg, #e53935, #c62828);
+            border-radius: 6px;
+            padding: 10px 8px 12px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(229,57,53,.35);
+            animation: alertPop .3s ease;
+        }
+        .search-alert.show { display: block; }
+        @keyframes alertPop {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .search-alert .alert-text { font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 8px; }
+        .search-alert .alert-text .icon { font-size: 14px; }
+        .search-alert .btn-unlock { display: inline-block; background: #ffffff; color: #e53935; border: none; border-radius: 14px; padding: 6px 20px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.15); transition: transform .15s; }
+        .search-alert .btn-unlock:active { transform: scale(.95); }
+
+        /* 在线人数（极紧凑） */
+        .online-bar { 
+            display: flex; align-items: center; justify-content: center; 
+            gap: 4px; padding: 2px 10px; font-size: 11px; color: #ccc; 
+            background: #16161e; margin: 0 10px 6px 10px; border-radius: 4px; 
+        }
+        .online-icon { font-size: 12px; }
+        .online-num { 
+            color: #ffcc00; font-weight: bold; font-size: 13px;
+            display: inline-block; min-width: 40px; text-align: center; transition: color .3s; 
+            text-shadow: 0 0 4px rgba(255, 204, 0, 0.4);
+        }
+        .online-num.up   { color: #4ade80 !important; text-shadow: 0 0 4px rgba(74, 222, 128, 0.4); }
+        .online-num.down { color: #f87171 !important; text-shadow: 0 0 4px rgba(248, 113, 113, 0.4); }
+
+        /* 分类标题栏（极紧凑） */
+        .cat-bar { display: flex; align-items: center; padding: 0 10px 4px 10px; gap: 4px; }
+        .cat-bar .icon {
+            width: 16px; height: 16px;
+            background: linear-gradient(135deg, #ff9800, #ffb74d);
+            border-radius: 3px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px;
+        }
+        .cat-bar .title { font-size: 12px; font-weight: bold; color: #fff; }
+        .cat-bar .subtitle { margin-left: auto; font-size: 10px; color: #888; }
+
+        .content-area { padding: 0; }
+
+        /* ============ 2列 ============ */
+        .grid-2 { 
+            display: grid; 
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 4px; 
+            padding: 0 4px; 
+        }
+        .card-wide { 
+            background: #1a1a24; 
+            border-radius: 4px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: transform .15s; 
+        }
+        .card-wide:active { transform: scale(.97); }
+        
+        .card-wide .thumb { 
+            position: relative; 
+            width: 100%; 
+            aspect-ratio: 3 / 1;
+            background: #333; 
+        }
+        .card-wide .tag { 
+            position: absolute; top: 2px; left: 2px; 
+            background: #e55c5c; color: #fff; 
+            font-size: 7px; padding: 1px 3px; 
+            border-radius: 2px; z-index: 2; 
+        }
+        .card-wide .play-btn { 
+            position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            width: 18px; height: 18px; 
+            background: rgba(255,255,255,.35); 
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 2; 
+        }
+        .card-wide .play-btn::after { 
+            content: ''; width: 0; height: 0; 
+            border-top: 3px solid transparent; 
+            border-bottom: 3px solid transparent; 
+            border-left: 6px solid #fff; 
+            margin-left: 2px; 
+        }
+        .card-wide .dur { 
+            position: absolute; bottom: 2px; right: 2px; 
+            background: rgba(0,0,0,.6); color: #fff; 
+            font-size: 7px; padding: 1px 3px; 
+            border-radius: 2px; z-index: 2; 
+        }
+        .card-wide .stat { 
+            position: absolute; bottom: 2px; left: 2px; 
+            display: flex; align-items: center; gap: 2px; 
+            font-size: 7px; color: #ddd; z-index: 2; 
+        }
+        .card-wide .finished { 
+            position: absolute; bottom: 2px; right: 2px; 
+            background: rgba(0,0,0,.7); color: #fff; 
+            font-size: 7px; padding: 1px 4px; 
+            border-radius: 2px; z-index: 2; 
+        }
+        .card-wide .name { 
+            font-size: 9px; color: #eee; 
+            padding: 3px 3px; 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+            line-height: 1.2; 
+        }
+
+        /* 软件/资源 4列 */
+        .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 0 4px; }
+        .card-square { background: #1a1a24; border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
+        .card-square .thumb { width: 100%; aspect-ratio: 1 / 1; background: #fff; }
+        .card-square .name { font-size: 9px; color: #eee; padding: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-square .btn { margin: 2px; background: linear-gradient(90deg, #ff9800, #ffb74d); color: #fff; font-size: 8px; font-weight: bold; text-align: center; padding: 3px 0; border-radius: 6px; }
+
+        /* 3列游戏 */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 0 4px; }
+        .card-game { background: #1a1a24; border-radius: 4px; overflow: hidden; cursor: pointer; transition: transform .15s; }
+        .card-game .thumb { position: relative; width: 100%; aspect-ratio: 4 / 3; background: #333; }
+        .card-game .tag { position: absolute; top: 2px; left: 2px; background: #e55c5c; color: #fff; font-size: 7px; padding: 1px 3px; border-radius: 2px; z-index: 2; }
+        .card-game .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 18px; height: 18px; background: rgba(255,255,255,.35); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; }
+        .card-game .play-btn::after { content: ''; width: 0; height: 0; border-top: 3px solid transparent; border-bottom: 3px solid transparent; border-left: 6px solid #fff; margin-left: 2px; }
+        .card-game .name { font-size: 9px; color: #eee; padding: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-game .btn { margin: 2px; background: linear-gradient(90deg, #00bcd4, #26c6da); color: #fff; font-size: 8px; font-weight: bold; text-align: center; padding: 3px 0; border-radius: 6px; }
+
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 4px; padding: 8px 0 16px 0; flex-wrap: wrap; }
+        .page-item { min-width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #aaa; cursor: pointer; }
+        .page-item.active { background: #ff9800; color: #fff; font-weight: bold; }
+        .page-item.dots { color: #888; cursor: default; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 46px; background: #16161e; border-top: 1px solid #2a2a3a; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 1px; font-size: 9px; color: #888; cursor: pointer; }
+        .nav-item.active { color: #fff; }
+        .nav-icon { font-size: 16px; line-height: 1; }
+        .nav-item.center { transform: translateY(-4px); }
+        .nav-item.center .nav-icon { width: 34px; height: 34px; background: linear-gradient(135deg,#a855f7,#ec4899); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 6px rgba(168,85,247,.4); border: 2px solid #16161e; }
+
+        .floating-btns { position: fixed; right: 6px; bottom: 100px; display: flex; flex-direction: column; gap: 6px; z-index: 99; }
+        .float-btn { width: 28px; height: 28px; background: rgba(30, 30, 40, 0.85); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #ccc; border: 1px solid #3a3a4a; cursor: pointer; }
+        .float-btn.ai-btn { background: #d6e4ff; color: #2d6cff; border: none; font-size: 10px; font-weight: bold; }
+        .float-btn.close-btn { background: rgba(120, 120, 130, 0.85); color: #fff; }
+        .float-dot { position: fixed; right: 6px; bottom: 40px; width: 32px; height: 32px; background: linear-gradient(135deg, #4facfe, #00c6fb); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; }
+
+        /* 弹窗部分 */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { width: 100%; max-width: 320px; background: #fff; border-radius: 16px; padding: 20px 16px 16px; position: relative; animation: popIn .25s ease; color: #222; }
+        @keyframes popIn { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-close { position: absolute; top: 10px; right: 12px; font-size: 18px; color: #aaa; cursor: pointer; line-height: 1; padding: 4px; background: none; border: none; }
+        .modal-title { text-align: center; font-size: 15px; font-weight: bold; color: #222; line-height: 1.5; margin-bottom: 14px; }
+
+        .modal-video-card { display: flex; gap: 10px; align-items: center; background: #f3f3f7; border-radius: 10px; padding: 8px; margin-bottom: 14px; }
+        .modal-video-cover { width: 60px; height: 60px; border-radius: 6px; overflow: hidden; flex-shrink: 0; background: #ddd; }
+        .modal-video-meta { flex: 1; min-width: 0; }
+        .modal-video-name { font-size: 13px; font-weight: bold; color: #222; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .modal-video-stats { display: flex; gap: 10px; font-size: 11px; color: #888; }
+
+        .btn-pay { display: block; width: 100%; background: linear-gradient(90deg,#ff9800,#ffb74d); color: #fff; border: none; border-radius: 20px; padding: 10px 0; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 8px; text-align: center; }
+        .btn-pay .vip-badge { display: inline-block; background: #222; color: #ffcc00; font-size: 9px; font-style: italic; font-weight: bold; padding: 2px 6px; border-radius: 8px; margin-left: 4px; vertical-align: middle; }
+        .btn-pay .sub, .btn-free .sub { display: block; font-size: 11px; font-weight: normal; opacity: .9; margin-top: 1px; }
+        .btn-free { display: block; width: 100%; background: linear-gradient(90deg,#ff2d78,#ff5c9d); color: #fff; border: none; border-radius: 20px; padding: 10px 0; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 12px; text-align: center; }
+        .modal-footer { text-align: center; font-size: 11px; color: #ff9800; background: #fff7e6; border: 1px dashed #ffcc80; border-radius: 16px; padding: 6px; }
+        .modal-footer #modalCount { color: #ff6b00; font-weight: bold; transition: color .3s; }
+
+        .welcome-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 24px; }
+        .welcome-overlay.show { display: flex; }
+        .welcome-box { width: 100%; max-width: 340px; background: linear-gradient(180deg, #fff5f7 0%, #ffffff 100%); border-radius: 18px; padding: 24px 20px 20px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.35); animation: welcomePop .35s ease; color: #333; }
+        @keyframes welcomePop { from { opacity: 0; transform: scale(.9) translateY(-20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .welcome-box .title { text-align: center; font-size: 20px; font-weight: 900; color: #e0447a; letter-spacing: 4px; margin-bottom: 18px; }
+        .welcome-box .text { font-size: 12px; line-height: 1.8; color: #444; margin-bottom: 12px; }
+        .welcome-box .text p { margin-bottom: 10px; }
+        .welcome-box .text .emph { color: #e0447a; font-weight: bold; }
+        .welcome-box .btn-confirm { display: block; width: 100%; background: linear-gradient(90deg, #f06292, #ec407a); color: #fff; border: none; border-radius: 25px; padding: 12px 0; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 6px; letter-spacing: 4px; box-shadow: 0 4px 12px rgba(236,64,122,.35); transition: transform .15s; }
+        .welcome-box .btn-confirm:active { transform: scale(.97); }
+
+        .toast-container { position: fixed; right: 8px; bottom: 90px; display: flex; flex-direction: column-reverse; gap: 6px; z-index: 9998; pointer-events: none; }
+        .toast-item { display: flex; align-items: center; gap: 6px; background: rgba(30, 30, 40, 0.95); color: #fff; padding: 6px 12px 6px 6px; border-radius: 24px; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,.3); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.1); transform: translateY(20px); opacity: 0; transition: all .4s ease; max-width: 240px; pointer-events: auto; }
+        .toast-item.show { transform: translateY(0); opacity: 1; }
+        .toast-avatar { width: 24px; height: 24px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: #444; border: 1px solid rgba(255,255,255,.2); }
+        .toast-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .toast-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ddd; }
+        .toast-text .name { color: #4ade80; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="top-notice">
+        <div class="top-notice-content">
+            <span>这是一个资源站</span>，想要什么资源，可以在搜索框自己搜。
+        </div>
+    </div>
+
+    <div class="top-banners">
+        <div class="banner-item banner-hot active" data-cat="hot">🔥 热门</div>
+        <div class="banner-item banner-anime" data-cat="anime">📺 动漫</div>
+        <div class="banner-item banner-comic" data-cat="comic">📘 漫画</div>
+    </div>
+    <div class="second-banners">
+        <div class="banner-item" data-cat="soft">💻 软件</div>
+        <div class="banner-item" data-cat="resource">💎 资源</div>
+        <div class="banner-item" data-cat="game">🏆 游戏</div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-box">
+            <div class="search-icon">🔍</div>
+            <input type="text" id="searchInput" placeholder="请输入关键词搜索你想要的资源">
+            <button class="search-btn" id="searchBtn">搜索</button>
+        </div>
+        <div class="search-hint">
+            <span>🔍</span> 网站未显示的资源，可以通过搜索框查找
+        </div>
+
+        <div class="search-alert" id="searchAlert">
+            <div class="alert-text"><span class="icon">⚠️</span> 搜索次数已达上限，获取口令后解锁全部资源！</div>
+            <button class="btn-unlock" id="btnUnlock">立即解锁</button>
+        </div>
+    </div>
+
+    <div class="online-bar">
+        <span class="online-icon">👥</span> 当前在线：<strong class="online-num" id="onlineNum">1963</strong> 人 🟢
+    </div>
+
+    <div class="cat-bar">
+        <div class="icon" id="catIcon">🔥</div>
+        <div class="title" id="catTitle">热门</div>
+        <div class="subtitle" id="catSubtitle">最热资源，一键直达</div>
+    </div>
+
+    <div class="content-area" id="contentArea"></div>
+
+    <div class="pagination" id="pagination"></div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" data-nav="home"><div class="nav-icon">🏠</div><span>首页</span></div>
+        <div class="nav-item" data-nav="circle"><div class="nav-icon">🎨</div><span>圈子</span></div>
+        <div class="nav-item center" data-nav="live"><div class="nav-icon">▶️</div><span>直播</span></div>
+        <div class="nav-item" data-nav="mine"><div class="nav-icon">👤</div><span>我的</span></div>
+    </div>
+
+    <div class="floating-btns">
+        <div class="float-btn ai-btn" id="floatAI">AI</div>
+        <div class="float-btn" id="floatSearch">🔍</div>
+        <div class="float-btn" id="floatUp">▲</div>
+        <div class="float-btn" id="floatDown">▼</div>
+        <div class="float-btn" id="floatRefresh">🔄</div>
+        <div class="float-btn close-btn" id="floatClose">✕</div>
+    </div>
+    <div class="float-dot" id="floatDot">⊕</div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div class="modal-title">请选择一种方式<br>获取网站所有资源</div>
+            
+            <div class="modal-video-card">
+                <div class="modal-video-cover">
+                    <img id="modalCover" src="" alt="封面">
+                </div>
+                <div class="modal-video-meta">
+                    <div class="modal-video-name" id="modalName">视频标题</div>
+                    <div class="modal-video-stats">
+                        <span>👁️ <span id="modalViews">0</span></span>
+                        <span>⏱ <span id="modalDuration">00:00</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-pay" id="btnPay">付费购买资源 <span class="vip-badge">VIP</span><span class="sub">无需做任务</span></button>
+            <button class="btn-free" id="btnFree">点这里👉免费获取资源👉<span class="sub">1分钟即可完成</span></button>
+            <div class="modal-footer">🔥 <span id="modalCount">56280</span>人已获取到资源</div>
+        </div>
+    </div>
+
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-box">
+            <div class="title">提示</div>
+            <div class="text">
+                <p>建议复制链接用浏览器打开哦，绿泡泡内容易领取失败</p>
+                <p>哈喽宝子们碎碎念两句！</p>
+                <p>最近好多人被钓鱼被骗钱，到手全是假资源，看着真心疼😭我做号本来就是为爱发电免费分享游戏资源，结果挡了别人利益，总被举报下架。索性直接自掏腰包搞人海战术，<span class="emph">免费领取入口放评论区！</span>就想让大家都能拿到真东西，不再踩坑上当💪</p>
+            </div>
+            <button class="btn-confirm" id="btnWelcomeConfirm">确定</button>
+        </div>
+    </div>
+
+    <script>
+        const HOT_DATA = [
+            { name: '🔥 马尔福同人',            dur: '00:33:26', views: '19.99W', img: 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017' },
+            { name: '🔥 马尔福大小姐',          dur: '00:28:26', views: '19.10W', img: 'https://zy.bbkk.mom/img/mrf.jpg?v=20261017' },
+            { name: '🔥 butterfly原神合集',     dur: '00:32:26', views: '22.10W', img: 'https://zy.bbkk.mom/img/ys.jpg?v=20261017' },
+            { name: '🔥 宁荣荣',                dur: '00:28:26', views: '18.10W', img: 'https://zy.bbkk.mom/img/nrr.jpg?v=20261017' },
+            { name: '🔥 斗罗大陆同人',          dur: '00:23:10', views: '18.10W', img: 'https://zy.bbkk.mom/img/dl.jpg?v=20261017' },
+            { name: '🔥 DY 🎬高三爱情故事',     dur: '00:40:20', views: '16.10W', img: 'https://zy.bbkk.mom/img/g3.jpg?v=20261017' },
+            { name: '🔥 DY 🎬哪吒长图完整版',   dur: '00:10:40', views: '22.10W', img: 'https://zy.bbkk.mom/img/1.jpg?v=20261017' },
+            { name: '🔥 DY 🎬ai漫剧',           dur: '04:45',    views: '21.15W', img: 'https://zy.bbkk.mom/img/02.jpg?v=20261017' },
+            { name: '🔥 DY 🎬无畏契约奶妈',     dur: '00:27:55', views: '17.98W', img: 'https://zy.bbkk.mom/img/2.jpg?v=20261017' },
+            { name: '🔥 DY 🎬暮蝶长图',         dur: '00:23:10', views: '18.10W', img: 'https://zy.bbkk.mom/img/3.jpg?v=20261017' },
+            { name: '3D甘露寺蜜璃',          dur: '00:13:45', views: '14.96W', img: 'https://zy.bbkk.mom/img/4.jpg?v=20261017' },
+            { name: 'aznyan07猫娘',          dur: '00:32:39', views: '19.10W', img: 'https://zy.bbkk.mom/img/5.jpg?v=20261017' },
+            { name: '3D蝴蝶忍',              dur: '00:37:45', views: '13.02W', img: 'https://zy.bbkk.mom/img/6.jpg?v=20261017' },
+            { name: '埃及猫',                dur: '00:24:45', views: '24.34W', img: 'https://zy.bbkk.mom/img/7.jpg?v=20261017' },
+            { name: '鲨鱼',                  dur: '00:25:54', views: '13.62W', img: 'https://zy.bbkk.mom/img/8.jpg?v=20261017' },
+            { name: '九柱会议',              dur: '00:14:10', views: '19.70W', img: 'https://zy.bbkk.mom/img/9.jpg?v=20261017' },
+            { name: '小马宝莉',              dur: '00:13:16', views: '13.68W', img: 'https://zy.bbkk.mom/img/10.jpg?v=20261017' },
+            { name: '绝区零二创',            dur: '00:15:52', views: '16.61W', img: 'https://zy.bbkk.mom/img/11.jpg?v=20261017' },
+            { name: '火影鸣人小樱',          dur: '00:16:45', views: '13.85W', img: 'https://zy.bbkk.mom/img/12.jpg?v=20261017' },
+            { name: '原神二创',              dur: '00:24:37', views: '14.63W', img: 'https://zy.bbkk.mom/img/13.jpg?v=20261017' },
+            { name: '南瓜派女孩',            dur: '00:39:16', views: '23.04W', img: 'https://zy.bbkk.mom/img/14.jpg?v=20261017' },
+            { name: 'mignon',                dur: '00:16:45', views: '18.76W', img: 'https://zy.bbkk.mom/img/15.jpg?v=20261017' }
+        ];
+
+        const ANIME_DATA = [
+            { name: '粉丝专属福利，限时开放浏览',    dur: '00:56:47', views: '3.28W',  img: 'https://zy.bbkk.mom/img/49.jpg?v=20261017' },
+            { name: '[强推] 高分好片，站内少有系列', dur: '00:30:53', views: '12.94W', img: 'https://zy.bbkk.mom/img/50.jpg?v=20261017' },
+            { name: '今日上新片单，看完直呼过瘾',    dur: '01:04:20', views: '7.92W',  img: 'https://zy.bbkk.mom/img/51.jpg?v=20261017' },
+            { name: '每周精选片单，本期内容超好看',  dur: '00:26:52', views: '4.61W',  img: 'https://zy.bbkk.mom/img/52.jpg?v=20261017' },
+            { name: '全套系列合集，一次看完全部',    dur: '00:52:44', views: '11.77W', img: 'https://zy.bbkk.mom/img/53.jpg?v=20261017' },
+            { name: '高分口碑影片，真心值得一看',    dur: '00:33:18', views: '6.33W',  img: 'https://zy.bbkk.mom/img/54.jpg?v=20261017' },
+            { name: '【合集】全套系列整理，一键观看', dur: '01:00:55', views: '13.49W', img: 'https://zy.bbkk.mom/img/55.jpg?v=20261017' },
+            { name: '平台热门推荐，观众热度超高',    dur: '00:43:26', views: '8.45W',  img: 'https://zy.bbkk.mom/img/56.jpg?v=20261017' },
+            { name: '会员专属片单，会员专享内容',    dur: '00:21:49', views: '5.91W',  img: 'https://zy.bbkk.mom/img/57.jpg?v=20261017' },
+            { name: 'VIP专属片库，随时点开观看',     dur: '00:19:36', views: '10.52W', img: 'https://zy.bbkk.mom/img/58.jpg?v=20261017' },
+            // 新增的 10 个窗口，已换成真实图片链接
+            { name: '我的母亲',                      dur: '00:15:20', views: '1.20W',  img: 'https://zy.bbkk.mom/img/75.jpg?v=20261017' },
+            { name: '约而过家家',                    dur: '00:18:30', views: '2.50W',  img: 'https://zy.bbkk.mom/img/76.jpg?v=20261017' },
+            { name: '催眠之岛',                      dur: '00:22:15', views: '3.10W',  img: 'https://zy.bbkk.mom/img/77.jpg?v=20261017' },
+            { name: '2B小姐',                        dur: '00:12:40', views: '4.50W',  img: 'https://zy.bbkk.mom/img/78.jpg?v=20261017' },
+            { name: '紫阳花',                        dur: '00:20:10', views: '1.80W',  img: 'https://zy.bbkk.mom/img/79.jpg?v=20261017' },
+            { name: '润足',                          dur: '00:10:50', views: '2.20W',  img: 'https://zy.bbkk.mom/img/80.jpg?v=20261017' },
+            { name: '殷夫人',                        dur: '00:16:20', views: '3.90W',  img: 'https://zy.bbkk.mom/img/81.jpg?v=20261017' },
+            { name: '遨润龙形态',                    dur: '00:25:00', views: '5.10W',  img: 'https://zy.bbkk.mom/img/82.jpg?v=20261017' },
+            { name: '西装兽',                        dur: '00:14:10', views: '1.50W',  img: 'https://zy.bbkk.mom/img/83.jpg?v=20261017' },
+            { name: '熟睡的梅花十三',                dur: '00:19:30', views: '2.80W',  img: 'https://zy.bbkk.mom/img/84.jpg?v=20261017' }
+        ];
+
+        const COMIC_DATA = [
+            { name: '失控的愿望（全集）',      img: 'https://zy.bbkk.mom/img/88.jpg?v=20261017' },
+            { name: '主播的灾难日（全集）',    img: 'https://zy.bbkk.mom/img/89.jpg?v=20261017' },
+            { name: '同学帮我保管（全集）',    img: 'https://zy.bbkk.mom/img/90.jpg?v=20261017' },
+            { name: '贪噬（全集）',            img: 'https://zy.bbkk.mom/img/91.jpg?v=20261017' },
+            { name: '失控兽宠（全集）',        img: 'https://zy.bbkk.mom/img/92.jpg?v=20261017' },
+            { name: '校园散零（全集）',        img: 'https://zy.bbkk.mom/img/93.jpg?v=20261017' },
+            { name: '借火（全集）',            img: 'https://zy.bbkk.mom/img/94.jpg?v=20261017' },
+            { name: '校园散零（全集）',        img: 'https://zy.bbkk.mom/img/95.jpg?v=20261017' },
+            { name: '半夜消失的他（全集）',    img: 'https://zy.bbkk.mom/img/96.jpg?v=20261017' },
+            { name: '森林的蛇先生（全集）',    img: 'https://zy.bbkk.mom/img/97.jpg?v=20261017' },
+            { name: '虚伪的神明（全集）',      img: 'https://zy.bbkk.mom/img/99.jpg?v=20261017' },
+            { name: '缩小术（全集）',          img: 'https://zy.bbkk.mom/img/100.jpg?v=20261017' },
+            { name: '今日咒言（全集）',        img: 'https://zy.bbkk.mom/img/101.jpg?v=20261017' },
+            { name: '妖狐的新年（全集）',      img: 'https://zy.bbkk.mom/img/102.jpg?v=20261017' },
+            { name: '融合（全集）',            img: 'https://zy.bbkk.mom/img/103.jpg?v=20261017' },
+            { name: '八尺大人的灾难',          img: 'https://zy.bbkk.mom/img/104.jpg?v=20261017' },
+            { name: '满员车厢（全集）',        img: 'https://zy.bbkk.mom/img/68.jpg?v=20261017' },
+            { name: '纠缠的弟弟（全集）',      img: 'https://zy.bbkk.mom/img/106.jpg?v=20261017' }
+        ];
+
+        const SOFT_DATA = [
+            { name: '追剧软件合集',  img: 'https://zy.bbkk.mom/img/r1.jpg?v=20261017' },
+            { name: '追漫软件合集',  img: 'https://zy.bbkk.mom/img/r2.jpg?v=20261017' },
+            { name: '小说软件合集',  img: 'https://zy.bbkk.mom/img/r3.jpg?v=20261017' },
+            { name: '电视直播软件',  img: 'https://zy.bbkk.mom/img/r4.jpg?v=20261017' },
+            { name: '白嫖教程',      img: 'https://zy.bbkk.mom/img/r5.jpg?v=20261017' },
+            { name: '学习资料大全',  img: 'https://zy.bbkk.mom/img/r6.jpg?v=20261017' },
+            { name: '网址大全',      img: 'https://zy.bbkk.mom/img/r7.jpg?v=20261017' },
+            { name: '其它众多资源',  img: 'https://zy.bbkk.mom/img/r8.jpg?v=20261017' }
+        ];
+
+        const RESOURCE_DATA = [
+            { name: '最新热门瓜',      img: 'https://zy.bbkk.mom/img/108.jpg?v=20261017' },
+            { name: '笔趣阁',          img: 'https://zy.bbkk.mom/img/109.jpg?v=20261017' },
+            { name: '爱豆模拟器',      img: 'https://zy.bbkk.mom/img/110.jpg?v=20261017' },
+            { name: '嫂嫂模拟器',      img: 'https://zy.bbkk.mom/img/111.jpg?v=20261017' },
+            { name: '霍格沃茨模拟器',  img: 'https://zy.bbkk.mom/img/112.jpg?v=20261017' },
+            { name: '哈利波特模拟器',  img: 'https://zy.bbkk.mom/img/113.jpg?v=20261017' },
+            { name: '修仙模拟器',      img: 'https://zy.bbkk.mom/img/114.jpg?v=20261017' },
+            { name: 'UU模拟器',        img: 'https://zy.bbkk.mom/img/115.jpg?v=20261017' },
+            { name: '猫猫AI',          img: 'https://zy.bbkk.mom/img/116.jpg?v=20261017' },
+            { name: '青丘语',          img: 'https://zy.bbkk.mom/img/117.jpg?v=20261017' },
+            { name: '喵趣漫画',        img: 'https://zy.bbkk.mom/img/118.jpg?v=20261017' },
+            { name: '文游模拟器',      img: 'https://zy.bbkk.mom/img/119.jpg?v=20261017' }
+        ];
+
+        const GAME_DATA = [
+            { name: '赫敏2无辜的女',        img: 'https://zy.bbkk.mom/img/120.jpg?v=20261017' },
+            { name: 'Goth Mommy I',         img: 'https://zy.bbkk.mom/img/121.jpg?v=20261017' },
+            { name: 'FRESHMAN Pr',          img: 'https://zy.bbkk.mom/img/122.jpg?v=20261017' },
+            { name: '成年的边缘 v0.',       img: 'https://zy.bbkk.mom/img/123.jpg?v=20261017' },
+            { name: '信任的阴影 v0.',       img: 'https://zy.bbkk.mom/img/124.jpg?v=20261017' },
+            { name: '格斗少女尤里 !',       img: 'https://zy.bbkk.mom/img/125.jpg?v=20261017' },
+            { name: '放置少女 v2.9',        img: 'https://zy.bbkk.mom/img/126.jpg?v=20261017' },
+            { name: '艾尔海姆公主的',       img: 'https://zy.bbkk.mom/img/127.jpg?v=20261017' },
+            { name: '不速之客 v0.14',       img: 'https://zy.bbkk.mom/img/128.jpg?v=20261017' },
+            { name: '裁员之心 Pink',        img: 'https://zy.bbkk.mom/img/129.jpg?v=20261017' },
+            { name: '传染危机 v0.7',        img: 'https://zy.bbkk.mom/img/130.jpg?v=20261017' },
+            { name: '春日狂想曲: 竹',       img: 'https://zy.bbkk.mom/img/131.jpg?v=20261017' },
+            { name: '抚摸痴汉模拟器',       img: 'https://zy.bbkk.mom/img/132.jpg?v=20261017' },
+            { name: '怪物的洞窟~',          img: 'https://zy.bbkk.mom/img/133.jpg?v=20261017' },
+            { name: '魔王大人，是',         img: 'https://zy.bbkk.mom/img/134.jpg?v=20261017' },
+            { name: '魔纹缠身-强气',        img: 'https://zy.bbkk.mom/img/135.jpg?v=20261017' },
+            { name: '逆梦的危境幻',         img: 'https://zy.bbkk.mom/img/136.jpg?v=20261017' },
+            { name: '潜入治安官 卧',        img: 'https://zy.bbkk.mom/img/137.jpg?v=20261017' }
+        ];
+
+        const CAT_META = {
+            hot:      { title: '热门', subtitle: '最热资源，一键直达', icon: '🔥' },
+            anime:    { title: '动漫', subtitle: '热门动漫，限时免费', icon: '📺' },
+            comic:    { title: '漫画', subtitle: '精彩漫画，全集免费', icon: '📘' },
+            soft:     { title: '软件', subtitle: '精品软件，免费下载', icon: '💻' },
+            resource: { title: '资源', subtitle: '海量资源，免费获取', icon: '💎' },
+            game:     { title: '游戏', subtitle: '热门游戏，免费下载', icon: '🎮' }
+        };
+
+        const contentArea = document.getElementById('contentArea');
+        const catIcon = document.getElementById('catIcon');
+        const catTitle = document.getElementById('catTitle');
+        const catSubtitle = document.getElementById('catSubtitle');
+        const pagination = document.getElementById('pagination');
+
+        function renderHot() {
+            contentArea.innerHTML = '<div class="grid-2">' + HOT_DATA.map(item => `
+                <div class="card-wide" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                    <div class="thumb">
+                        <span class="tag">限免</span>
+                        <img src="${item.img}" alt="${item.name}" loading="lazy">
+                        <div class="play-btn"></div>
+                        <div class="stat"><span>👁️</span> ${item.views}</div>
+                        <div class="dur">${item.dur}</div>
+                    </div>
+                    <div class="name">${item.name}</div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function renderAnime() {
+            contentArea.innerHTML = '<div class="grid-2">' + ANIME_DATA.map(item => `
+                <div class="card-wide" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                    <div class="thumb">
+                        <span class="tag">限免</span>
+                        <img src="${item.img}" alt="${item.name}" loading="lazy">
+                        <div class="play-btn"></div>
+                        <div class="stat"><span>👁️</span> ${item.views}</div>
+                        <div class="dur">${item.dur}</div>
+                    </div>
+                    <div class="name">${item.name}</div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function renderComic() {
+            contentArea.innerHTML = '<div class="grid-2">' + COMIC_DATA.map(item => `
+                <div class="card-wide" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                    <div class="thumb">
+                        <span class="tag">限免</span>
+                        <img src="${item.img}" alt="${item.name}" loading="lazy">
+                        <div class="play-btn"></div>
+                        <div class="finished">已完结</div>
+                    </div>
+                    <div class="name">${item.name}</div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function renderSoft() {
+            contentArea.innerHTML = '<div class="grid-4">' + SOFT_DATA.map(item => `
+                <div class="card-square" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                    <div class="thumb"><img src="${item.img}" alt="${item.name}" loading="lazy"></div>
+                    <div class="name">${item.name}</div>
+                    <div class="btn">获取软件</div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function renderResource() {
+            contentArea.innerHTML = '<div class="grid-4">' + RESOURCE_DATA.map(item => `
+                <div class="card-square" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                    <div class="thumb"><img src="${item.img}" alt="${item.name}" loading="lazy"></div>
+                    <div class="name">${item.name}</div>
+                    <div class="btn">获取资源</div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function renderGame() {
+            contentArea.innerHTML = '<div class="grid-3">' + GAME_DATA.map(item => `
+                <div class="card-game" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                    <div class="thumb">
+                        <span class="tag">限免</span>
+                        <img src="${item.img}" alt="${item.name}" loading="lazy">
+                        <div class="play-btn"></div>
+                    </div>
+                    <div class="name">${item.name}</div>
+                    <div class="btn">下载游戏</div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function switchCat(cat) {
+            const meta = CAT_META[cat] || CAT_META.hot;
+            catIcon.textContent = meta.icon;
+            catTitle.textContent = meta.title;
+            catSubtitle.textContent = meta.subtitle;
+
+            document.querySelectorAll('[data-cat]').forEach(el => {
+                el.classList.toggle('active', el.getAttribute('data-cat') === cat);
+            });
+
+            switch (cat) {
+                case 'anime':    renderAnime(); break;
+                case 'comic':    renderComic(); break;
+                case 'soft':     renderSoft(); break;
+                case 'resource': renderResource(); break;
+                case 'game':     renderGame(); break;
+                default:         renderHot(); break;
+            }
+
+            buildPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('[data-cat]').forEach(el => {
+            el.addEventListener('click', () => {
+                switchCat(el.getAttribute('data-cat'));
+            });
+        });
+
+        function buildPagination() {
+            pagination.innerHTML = '';
+
+            const prev = document.createElement('div');
+            prev.className = 'page-item';
+            prev.textContent = '‹';
+            prev.onclick = () => openModal();
+            pagination.appendChild(prev);
+
+            const p1 = document.createElement('div');
+            p1.className = 'page-item active';
+            p1.textContent = '1';
+            p1.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            pagination.appendChild(p1);
+
+            for (let i = 2; i <= 5; i++) {
+                const el = document.createElement('div');
+                el.className = 'page-item';
+                el.textContent = i;
+                el.onclick = () => openModal();
+                pagination.appendChild(el);
+            }
+
+            const dots = document.createElement('div');
+            dots.className = 'page-item dots';
+            dots.textContent = '...';
+            pagination.appendChild(dots);
+
+            const p99 = document.createElement('div');
+            p99.className = 'page-item';
+            p99.textContent = '99+';
+            p99.onclick = () => openModal();
+            pagination.appendChild(p99);
+
+            const next = document.createElement('div');
+            next.className = 'page-item';
+            next.textContent = '›';
+            next.onclick = () => openModal();
+            pagination.appendChild(next);
+        }
+
+        const overlay = document.getElementById('modalOverlay');
+        const modalCover = document.getElementById('modalCover');
+        const modalName = document.getElementById('modalName');
+        const modalViews = document.getElementById('modalViews');
+        const modalDuration = document.getElementById('modalDuration');
+
+        function openModal(item) {
+            if (item) {
+                modalCover.src = item.img || '';
+                modalName.textContent = item.name || '获取资源';
+                modalViews.textContent = item.views || '0';
+                modalDuration.textContent = item.dur || '00:00';
+            } else {
+                modalCover.src = 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017';
+                modalName.textContent = '获取网站所有资源';
+                modalViews.textContent = '19.99W';
+                modalDuration.textContent = '00:33:26';
+            }
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+        document.getElementById('btnPay').addEventListener('click', () => location.href = 'pay.html');
+        document.getElementById('btnFree').addEventListener('click', () => location.href = 'task.html');
+
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.addEventListener('click', () => {
+                const nav = el.getAttribute('data-nav');
+                if (nav === 'home') return;
+                openModal();
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchAlert = document.getElementById('searchAlert');
+
+        function doSearch() {
+            const kw = searchInput.value.trim();
+            if (!kw) return alert('请输入搜索关键词');
+            searchAlert.classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        searchBtn.addEventListener('click', doSearch);
+        searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+        document.getElementById('btnUnlock').addEventListener('click', () => openModal());
+
+        const onlineNum = document.getElementById('onlineNum');
+        let currentOnline = 1963;
+
+        function tickOnline() {
+            const delta = Math.floor(Math.random() * 21) - 10;
+            currentOnline += delta;
+            if (currentOnline < 1500) currentOnline = 1500;
+            if (currentOnline > 2500) currentOnline = 2500;
+
+            onlineNum.textContent = currentOnline;
+            onlineNum.classList.remove('up', 'down');
+            if (delta > 0) onlineNum.classList.add('up');
+            else if (delta < 0) onlineNum.classList.add('down');
+
+            setTimeout(tickOnline, 1000 + Math.random() * 2000);
+        }
+        tickOnline();
+
+        const modalCount = document.getElementById('modalCount');
+        let countValue = 56280;
+
+        function tickModalCount() {
+            countValue += Math.floor(Math.random() * 3) + 1;
+            modalCount.textContent = countValue;
+            setTimeout(tickModalCount, 3000 + Math.random() * 3000);
+        }
+        tickModalCount();
+
+        const toastContainer = document.getElementById('toastContainer');
+        const AVATAR_SEEDS = [
+            'a1','b2','c3','d4','e5','f6','g7','h8','i9','j10',
+            'k11','l12','m13','n14','o15','p16','q17','r18','s19','t20',
+            'u21','v22','w23','x24','y25','z26','A1','B2','C3','D4'
+        ];
+
+        function pickRandom(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function randomUser() {
+            const digits = Math.floor(Math.random() * 900) + 10;
+            return '***' + digits;
+        }
+
+        function showToast() {
+            const item = document.createElement('div');
+            item.className = 'toast-item';
+
+            const name = randomUser();
+            const seed = pickRandom(AVATAR_SEEDS);
+            const avatarUrl = `https://api.dicebear.com/7.x/thumbs/svg?seed=${seed}`;
+
+            item.innerHTML = `
+                <div class="toast-avatar"><img src="${avatarUrl}" alt="avatar"></div>
+                <div class="toast-text">
+                    <span class="name">${name}</span> 刚刚已获取到资源
+                </div>
+            `;
+
+            toastContainer.appendChild(item);
+            requestAnimationFrame(() => item.classList.add('show'));
+
+            setTimeout(() => {
+                item.classList.remove('show');
+                setTimeout(() => item.remove(), 400);
+            }, 3000);
+        }
+
+        function loopToast() {
+            showToast();
+            const next = 2500 + Math.random() * 2500;
+            setTimeout(loopToast, next);
+        }
+        setTimeout(loopToast, 1500);
+
+        document.getElementById('floatAI').addEventListener('click', () => alert('AI 助手：可以帮你搜索资源、解答问题'));
+        document.getElementById('floatSearch').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            searchInput.focus();
+        });
+        document.getElementById('floatUp').addEventListener('click', () => window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' }));
+        document.getElementById('floatDown').addEventListener('click', () => window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' }));
+        document.getElementById('floatRefresh').addEventListener('click', () => location.reload());
+        document.getElementById('floatClose').addEventListener('click', () => {
+            if (confirm('确定要离开本站吗？')) history.back();
+        });
+        document.getElementById('floatDot').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        const welcomeOverlay = document.getElementById('welcomeOverlay');
+        welcomeOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+
+        document.getElementById('btnWelcomeConfirm').addEventListener('click', () => {
+            welcomeOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+        });
+
+        switchCat('hot');
+    </script>
+</body>
+</html>

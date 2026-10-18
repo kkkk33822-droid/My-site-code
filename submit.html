@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>提交截图领取激活密码</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #f5f6fa; color: #222;
+            min-height: 100vh; padding-bottom: 20px;
+        }
+        ::-webkit-scrollbar { display: none; }
+
+        .header-card {
+            background: linear-gradient(135deg, #7b2ff7, #2d6cff);
+            color: #fff; text-align: center;
+            padding: 32px 20px 40px;
+            border-radius: 0 0 24px 24px;
+        }
+        .header-card .title {
+            font-size: 22px; font-weight: 900;
+            line-height: 1.4; letter-spacing: 1px;
+            text-shadow: 0 2px 6px rgba(0,0,0,.2);
+        }
+        .header-card .subtitle { font-size: 13px; opacity: .9; margin-top: 8px; }
+
+        .upload-card {
+            background: #fff; border-radius: 20px;
+            margin: -20px 14px 14px;
+            padding: 22px 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.06);
+        }
+
+        .upload-zone {
+            display: block;
+            border: 2px dashed #c8d9f0;
+            background: #f7fbff;
+            border-radius: 16px;
+            padding: 36px 16px 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s;
+            position: relative;
+        }
+        .upload-zone:hover { border-color: #2d6cff; background: #eef5ff; }
+        .upload-zone .cloud-icon { width: 60px; height: 42px; margin: 0 auto 14px; display: block; }
+        .upload-zone .hint { font-size: 14px; color: #4a5a72; margin-bottom: 16px; }
+        .upload-zone .choose-btn {
+            display: inline-block;
+            background: #2d6cff; color: #fff;
+            font-size: 14px; font-weight: bold;
+            padding: 10px 28px; border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(45,108,255,.3);
+            pointer-events: none;
+        }
+        .upload-zone input[type="file"] {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            opacity: 0; cursor: pointer;
+        }
+
+        .count-row { text-align: right; font-size: 13px; color: #888; margin-top: 14px; }
+        .count-row .num { color: #2d6cff; font-weight: bold; }
+
+        .progress-bar {
+            height: 6px; background: #e8ecf3;
+            border-radius: 3px; margin: 10px 0 20px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            height: 100%; width: 0;
+            background: linear-gradient(90deg, #2d6cff, #7b2ff7);
+            border-radius: 3px;
+            transition: width .3s ease;
+        }
+
+        .btn-submit {
+            display: block; width: 100%;
+            background: #c8cdd6; color: #fff;
+            border: none; border-radius: 26px;
+            padding: 15px 0; font-size: 16px; font-weight: bold;
+            cursor: not-allowed; transition: all .3s;
+        }
+        .btn-submit.active {
+            background: linear-gradient(90deg, #7b2ff7, #2d6cff);
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(123,47,247,.35);
+        }
+        .btn-submit.active:active { opacity: .85; }
+
+        .tips-card {
+            background: #fff; border-radius: 16px;
+            margin: 14px; padding: 18px 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.04);
+        }
+        .tips-card .tips-title {
+            font-size: 15px; font-weight: bold; color: #333;
+            margin-bottom: 12px;
+        }
+        .tips-card ul { list-style: none; padding-left: 0; }
+        .tips-card ul li {
+            font-size: 13px; color: #666; line-height: 1.9;
+            padding-left: 14px; position: relative;
+        }
+        .tips-card ul li::before {
+            content: '·'; position: absolute; left: 0;
+            color: #999; font-weight: bold;
+        }
+
+        .footer { text-align: center; font-size: 12px; color: #aaa; padding: 20px 0; }
+
+        .preview-list {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 8px; margin-top: 14px;
+        }
+        .preview-item {
+            position: relative; aspect-ratio: 1 / 1;
+            border-radius: 10px; overflow: hidden;
+            background: #f0f0f5;
+        }
+        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-item .remove {
+            position: absolute; top: 4px; right: 4px;
+            width: 20px; height: 20px;
+            background: rgba(0,0,0,.6); color: #fff;
+            border-radius: 50%; border: none;
+            font-size: 12px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+        }
+
+        .loading-mask {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.6);
+            display: none; align-items: center; justify-content: center;
+            z-index: 9999;
+            color: #fff; font-size: 15px;
+            flex-direction: column; gap: 12px;
+        }
+        .loading-mask.show { display: flex; }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255,255,255,.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-mask .tip { font-size: 12px; opacity: .8; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-card">
+        <div class="title">📷 提交3张任务截图<br>领取激活密码</div>
+        <div class="subtitle">AI自动审核，作假拉黑</div>
+    </div>
+
+    <div class="upload-card">
+        <label class="upload-zone" for="fileInput">
+            <svg class="cloud-icon" viewBox="0 0 64 44" fill="none">
+                <path d="M52 32H14a10 10 0 010-20c1 0 2 .1 3 .3A16 16 0 0148 18a10 10 0 014 14z" fill="#dde7f5"/>
+            </svg>
+            <div class="hint">点击或拖拽图片到此区域</div>
+            <span class="choose-btn">选择图片</span>
+            <input type="file" id="fileInput" accept="image/*" multiple>
+        </label>
+
+        <div class="count-row">已选择：<span class="num" id="count">0</span>/3 张图片</div>
+        <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+        <div class="preview-list" id="previewList"></div>
+
+        <button class="btn-submit" id="btnSubmit" disabled>提交截图并领取代码</button>
+    </div>
+
+    <div class="tips-card">
+        <div class="tips-title">📋 上传说明</div>
+        <ul>
+            <li>请上传3张符合要求的截图</li>
+            <li>提交虚假截图，会被拉黑IP和设备将无法获取密码</li>
+            <li>上传完成后点击提交按钮获取资源</li>
+        </ul>
+    </div>
+
+    <div class="footer">© 2026 代码领取中心</div>
+
+    <div class="loading-mask" id="loadingMask">
+        <div class="spinner"></div>
+        <div id="loadingText">正在提交，请稍候...</div>
+        <div class="tip" id="loadingTip">正在上传截图</div>
+    </div>
+
+    <script>
+        const MAX_FILES = 3;
+
+        const fileInput = document.getElementById('fileInput');
+        const previewList = document.getElementById('previewList');
+        const countEl = document.getElementById('count');
+        const progressFill = document.getElementById('progressFill');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const loadingMask = document.getElementById('loadingMask');
+        const loadingText = document.getElementById('loadingText');
+        const loadingTip = document.getElementById('loadingTip');
+
+        let items = [];
+
+        // ============ 选择文件 ============
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+
+            const remain = MAX_FILES - items.length;
+            if (remain <= 0) {
+                alert(`最多只能上传 ${MAX_FILES} 张截图`);
+                fileInput.value = '';
+                return;
+            }
+
+            files.slice(0, remain).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                items.push({
+                    file,
+                    url: URL.createObjectURL(file)
+                });
+            });
+
+            if (files.length > remain) alert(`最多只能上传 ${MAX_FILES} 张，多余的已忽略`);
+
+            render();
+            fileInput.value = '';
+        });
+
+        // ============ 渲染 ============
+        function render() {
+            previewList.innerHTML = '';
+            items.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'preview-item';
+                el.innerHTML = `
+                    <img src="${item.url}" alt="预览">
+                    <button class="remove" data-index="${index}">✕</button>
+                `;
+                previewList.appendChild(el);
+            });
+
+            countEl.textContent = items.length;
+            progressFill.style.width = (items.length / MAX_FILES * 100) + '%';
+
+            // 只要满 3 张就允许提交
+            if (items.length === MAX_FILES) {
+                btnSubmit.classList.add('active');
+                btnSubmit.disabled = false;
+            } else {
+                btnSubmit.classList.remove('active');
+                btnSubmit.disabled = true;
+            }
+        }
+
+        // 删除
+        previewList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove')) {
+                const idx = parseInt(e.target.dataset.index);
+                URL.revokeObjectURL(items[idx].url);
+                items.splice(idx, 1);
+                render();
+            }
+        });
+
+        // ============ 提交（直接放行） ============
+        btnSubmit.addEventListener('click', () => {
+            if (items.length !== MAX_FILES) {
+                alert(`请上传 ${MAX_FILES} 张截图`);
+                return;
+            }
+
+            loadingMask.classList.add('show');
+            loadingText.textContent = '提交中，请稍候...';
+            loadingTip.textContent = '正在上传你的截图';
+
+            // 如果以后要真正上传到服务器，把下面这段替换成 fetch 上传
+            /*
+            const formData = new FormData();
+            items.forEach(item => formData.append('imgs', item.file));
+            fetch('/api/submit', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    loadingMask.classList.remove('show');
+                    if (data.code === 0) {
+                        location.href = 'success.html';
+                    } else {
+                        alert(data.msg || '提交失败');
+                    }
+                })
+                .catch(() => {
+                    loadingMask.classList.remove('show');
+                    alert('网络异常，请稍后重试');
+                });
+            */
+
+            // 当前版本：模拟提交成功，1.2 秒后跳转
+            setTimeout(() => {
+                loadingMask.classList.remove('show');
+                location.href = 'success.html';
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
