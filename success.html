@@ -2,82 +2,223 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>审核通过</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>提交截图领取激活密码</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            padding: 20px;
-        }
-        .card {
-            background: #fff;
-            color: #222;
-            border-radius: 20px;
-            padding: 40px 24px;
-            text-align: center;
-            max-width: 360px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,.2);
-            animation: popIn .4s ease;
-        }
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(.85); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .icon { font-size: 60px; margin-bottom: 16px; }
-        h1 { font-size: 22px; margin-bottom: 10px; color: #222; }
-        p { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 24px; }
-        .btn {
-            display: block;
-            width: 100%;
-            background: linear-gradient(90deg, #7c4dff, #b388ff);
-            color: #fff;
-            text-decoration: none;
-            padding: 14px 0;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:active { opacity: .85; }
-        .btn-secondary {
-            display: block;
-            width: 100%;
-            background: #f0f0f5;
-            color: #555;
-            text-decoration: none;
-            padding: 12px 0;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .btn-secondary:active { background: #e0e0e8; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f6fa; color: #222; min-height: 100vh; padding-bottom: 20px; }
+        ::-webkit-scrollbar { display: none; }
+
+        /* ======== 初始上传界面 ======== */
+        #uploadInterface { display: block; }
+        .header-card { background: linear-gradient(135deg, #7b2ff7, #2d6cff); color: #fff; text-align: center; padding: 32px 20px 40px; border-radius: 0 0 24px 24px; }
+        .header-card .title { font-size: 22px; font-weight: 900; line-height: 1.4; letter-spacing: 1px; text-shadow: 0 2px 6px rgba(0,0,0,.2); }
+        .header-card .subtitle { font-size: 13px; opacity: .9; margin-top: 8px; }
+
+        .upload-card { background: #fff; border-radius: 20px; margin: -20px 14px 14px; padding: 22px 16px; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+        .upload-zone { display: block; border: 2px dashed #c8d9f0; background: #f7fbff; border-radius: 16px; padding: 36px 16px 28px; text-align: center; cursor: pointer; transition: all .2s; position: relative; }
+        .upload-zone:hover { border-color: #2d6cff; background: #eef5ff; }
+        .upload-zone .cloud-icon { width: 60px; height: 42px; margin: 0 auto 14px; display: block; }
+        .upload-zone .hint { font-size: 14px; color: #4a5a72; margin-bottom: 16px; }
+        .upload-zone .choose-btn { display: inline-block; background: #2d6cff; color: #fff; font-size: 14px; font-weight: bold; padding: 10px 28px; border-radius: 24px; box-shadow: 0 4px 12px rgba(45,108,255,.3); pointer-events: none; }
+        .upload-zone input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+
+        .count-row { text-align: right; font-size: 13px; color: #888; margin-top: 14px; }
+        .count-row .num { color: #2d6cff; font-weight: bold; }
+        .progress-bar { height: 6px; background: #e8ecf3; border-radius: 3px; margin: 10px 0 20px; overflow: hidden; }
+        .progress-bar .fill { height: 100%; width: 0; background: linear-gradient(90deg, #2d6cff, #7b2ff7); border-radius: 3px; transition: width .3s ease; }
+
+        .btn-submit { display: block; width: 100%; background: #c8cdd6; color: #fff; border: none; border-radius: 26px; padding: 15px 0; font-size: 16px; font-weight: bold; cursor: not-allowed; transition: all .3s; }
+        .btn-submit.active { background: linear-gradient(90deg, #7b2ff7, #2d6cff); cursor: pointer; box-shadow: 0 6px 16px rgba(123,47,247,.35); }
+
+        .tips-card { background: #fff; border-radius: 16px; margin: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+        .tips-card .tips-title { font-size: 15px; font-weight: bold; color: #333; margin-bottom: 12px; }
+        .tips-card ul { list-style: none; padding-left: 0; }
+        .tips-card ul li { font-size: 13px; color: #666; line-height: 1.9; padding-left: 14px; position: relative; }
+        .tips-card ul li::before { content: '·'; position: absolute; left: 0; color: #999; font-weight: bold; }
+
+        .preview-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+        .preview-item { position: relative; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: #f0f0f5; }
+        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-item .remove { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; background: rgba(0,0,0,.6); color: #fff; border-radius: 50%; border: none; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+        /* ======== Loading & 弹窗遮罩 ======== */
+        .loading-mask, .success-modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; align-items: center; justify-content: center; z-index: 9999; color: #fff; flex-direction: column; gap: 12px; }
+        .loading-mask.show, .success-modal-mask.show { display: flex; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .success-box { background: #fff; border-radius: 16px; padding: 30px 24px; text-align: center; width: 85%; max-width: 320px; color: #333; animation: popIn 0.3s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .success-box .icon { font-size: 50px; margin-bottom: 10px; }
+        .success-box h3 { font-size: 20px; margin-bottom: 10px; color: #1a1a2e; }
+        .success-box p { font-size: 14px; color: #666; margin-bottom: 24px; }
+        .success-box .btn-ok { display: block; width: 100%; background: linear-gradient(90deg, #7b2ff7, #2d6cff); color: #fff; border: none; border-radius: 25px; padding: 12px 0; font-size: 16px; font-weight: bold; cursor: pointer; }
+
+        /* ======== 紫色聚合页 (图三) ======== */
+        #link3Interface { display: none; background: linear-gradient(180deg, #e8dcff 0%, #b59cff 30%, #7c3aed 100%); min-height: 100vh; position: absolute; inset: 0; padding: 40px 20px; text-align: center; z-index: 99; }
+        .l3-home-icon { position: absolute; left: 20px; top: 20px; font-size: 20px; color: #333; background: rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .l3-top-actions { position: absolute; right: 20px; top: 20px; display: flex; gap: 10px; }
+        .l3-top-btn { background: #000; color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+        .l3-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.8); margin: 0 auto 16px; overflow: hidden; }
+        .l3-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .l3-title { font-size: 20px; font-weight: bold; color: #fff; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .l3-desc { font-size: 12px; color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px; padding: 0 10px; }
+        .l3-domain-pill { background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.5); display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 12px; color: #fff; margin-bottom: 40px; backdrop-filter: blur(4px); }
+        .l3-link-list { display: flex; flex-direction: column; gap: 16px; max-width: 400px; margin: 0 auto; }
+        .l3-link-item { background: #fff; border-radius: 30px; padding: 14px 20px; display: flex; align-items: center; text-decoration: none; color: #333; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .l3-icon { width: 36px; height: 36px; border-radius: 50%; background: #000; display: flex; align-items: center; justify-content: center; margin-right: 14px; flex-shrink: 0; }
+        .l3-icon svg { width: 20px; height: 20px; fill: #fff; }
+        .l3-text { flex: 1; text-align: center; font-size: 14px; font-weight: bold; }
+        .l3-arrow { color: #ccc; font-size: 18px; font-weight: bold; }
+        .l3-footer { position: absolute; bottom: 40px; left: 0; width: 100%; text-align: center; color: rgba(255,255,255,0.7); font-size: 12px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="icon">✅</div>
-        <h1>审核已通过</h1>
-        <p>资源已解锁，点击下方按钮获取资源</p>
-        <button class="btn" id="downloadBtn">📥 立即下载资源</button>
-        <a class="btn-secondary" href="index.html">返回首页</a>
+
+    <!-- 1. 初始上传界面 -->
+    <div id="uploadInterface">
+        <div class="header-card">
+            <div class="title">📷 提交3张任务截图<br>领取激活密码</div>
+            <div class="subtitle">AI自动审核，作假拉黑</div>
+        </div>
+        <div class="upload-card">
+            <label class="upload-zone" for="fileInput">
+                <svg class="cloud-icon" viewBox="0 0 64 44" fill="none"><path d="M52 32H14a10 10 0 010-20c1 0 2 .1 3 .3A16 16 0 0148 18a10 10 0 014 14z" fill="#dde7f5"/></svg>
+                <div class="hint">点击或拖拽图片到此区域</div>
+                <span class="choose-btn">选择图片</span>
+                <input type="file" id="fileInput" accept="image/*" multiple>
+            </label>
+            <div class="count-row">已选择：<span class="num" id="count">0</span>/3 张图片</div>
+            <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+            <div class="preview-list" id="previewList"></div>
+            <button class="btn-submit" id="btnSubmit" disabled>提交截图并领取代码</button>
+        </div>
+        <div class="tips-card">
+            <div class="tips-title">📋 上传说明</div>
+            <ul>
+                <li>请上传3张符合要求的截图</li>
+                <li>提交虚假截图，会被拉黑IP和设备将无法获取密码</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 2. 紫色 Link3 网盘页 (图三) -->
+    <div id="link3Interface">
+        <div class="l3-home-icon">🏠</div>
+        <div class="l3-top-actions">
+            <div class="l3-top-btn">⭐ 收藏</div>
+            <div class="l3-top-btn">↑ 分享</div>
+        </div>
+        <div class="l3-avatar"><img src="https://picsum.photos/seed/avatar2/200/200" alt="头像"></div>
+        <div class="l3-title">资源获取站</div>
+        <div class="l3-desc">资源都在下面的网盘里面，一定要把网盘里面的资源转存到你自己的网盘。因为随时会失效。下面网盘资源。请全部保存到你自己的网盘</div>
+        <div class="l3-domain-pill">link3.cc/qq2255 <span>📋</span></div>
+        <div class="l3-link-list">
+            <a href="https://drive.uc.cn" class="l3-link-item" target="_blank">
+                <div class="l3-icon"><svg viewBox="0 0 48 48"><path d="M24 8C15.163 8 8 15.163 8 24s7.163 16 16 16 16-7.163 16-16S32.837 8 24 8zm-1 23h-2v-2h2v2zm0-4h-2V13h2v14zm4 4h-2v-2h2v2zm0-4h-2V13h2v14z" fill="#fff"/></svg></div>
+                <div class="l3-text">资源1=uc网盘（优先获取）</div>
+                <div class="l3-arrow">›</div>
+            </a>
+            <a href="https://pan.quark.cn" class="l3-link-item" target="_blank">
+                <div class="l3-icon" style="background:#2a6cf5;"><svg viewBox="0 0 48 48"><path d="M24 10A14 14 0 1010 24a14 14 0 0014 14 14 14 0 0014-14A14 14 0 0024 10zm0 24a10 10 0 1110-10 10 10 0 01-10 10z" fill="#fff"/></svg></div>
+                <div class="l3-text">资源2=夸克网盘（也保存到自己的网盘）</div>
+                <div class="l3-arrow">›</div>
+            </a>
+        </div>
+        <div class="l3-footer"><div class="logo">🌐 Link3.cc</div><div>举报</div><div style="margin-top: 15px;"><span style="background:#ff5c9d; padding:10px 30px; border-radius:30px; color:#fff; font-weight:bold;">免费制作Link3聚合页</span></div></div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-mask" id="loadingMask">
+        <div class="spinner"></div>
+        <div id="loadingText">正在提交，请稍候...</div>
+    </div>
+
+    <!-- 提交成功弹窗 -->
+    <div class="success-modal-mask" id="successMask">
+        <div class="success-box">
+            <div class="icon">🎉</div>
+            <h3>提交成功！</h3>
+            <p>审核通过，资源已发放，即将为你跳转...</p>
+            <button class="btn-ok" id="btnGoLink3">确 定</button>
+        </div>
     </div>
 
     <script>
-        // 从 URL 读取视频 id
-        const params = new URLSearchParams(location.search);
-        const id = params.get('id') || '';
+        const MAX_FILES = 3;
+        const fileInput = document.getElementById('fileInput');
+        const previewList = document.getElementById('previewList');
+        const countEl = document.getElementById('count');
+        const progressFill = document.getElementById('progressFill');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const loadingMask = document.getElementById('loadingMask');
+        const successMask = document.getElementById('successMask');
 
-        document.getElementById('downloadBtn').addEventListener('click', () => {
-            // 这里把下载链接换成你的实际资源地址
-            // window.location.href = 'https://你的网盘链接';
-            alert('正在打开资源链接... (id: ' + id + ')');
+        let items = [];
+
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+            const remain = MAX_FILES - items.length;
+            if (remain <= 0) { alert(`最多只能上传 ${MAX_FILES} 张截图`); fileInput.value = ''; return; }
+            files.slice(0, remain).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                items.push({ file, url: URL.createObjectURL(file) });
+            });
+            render();
+            fileInput.value = '';
+        });
+
+        function render() {
+            previewList.innerHTML = '';
+            items.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'preview-item';
+                el.innerHTML = `<img src="${item.url}" alt="预览"><button class="remove" data-index="${index}">✕</button>`;
+                previewList.appendChild(el);
+            });
+            countEl.textContent = items.length;
+            progressFill.style.width = (items.length / MAX_FILES * 100) + '%';
+            if (items.length === MAX_FILES) {
+                btnSubmit.classList.add('active');
+                btnSubmit.disabled = false;
+            } else {
+                btnSubmit.classList.remove('active');
+                btnSubmit.disabled = true;
+            }
+        }
+
+        previewList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove')) {
+                const idx = parseInt(e.target.dataset.index);
+                URL.revokeObjectURL(items[idx].url);
+                items.splice(idx, 1);
+                render();
+            }
+        });
+
+        btnSubmit.addEventListener('click', () => {
+            if (items.length !== MAX_FILES) { alert(`请上传 ${MAX_FILES} 张截图`); return; }
+
+            loadingMask.classList.add('show');
+            loadingMask.querySelector('#loadingText').textContent = '正在提交，请稍候...';
+
+            // 模拟提交
+            setTimeout(() => {
+                loadingMask.classList.remove('show');
+                // 弹出成功提示框
+                successMask.classList.add('show');
+                
+                // 点击确定
+                document.getElementById('btnGoLink3').onclick = () => {
+                    successMask.classList.remove('show');
+                    // 隐藏上传界面，直接在当前页变身为紫色网盘页面
+                    document.getElementById('uploadInterface').style.display = 'none';
+                    document.getElementById('link3Interface').style.display = 'block';
+                    window.scrollTo(0, 0);
+                };
+            }, 1500);
         });
     </script>
 </body>
