@@ -273,7 +273,8 @@
                         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
                         <div class="text">点击获取最新二维码</div>
                     </div>
-                    <img class="qr-img" id="qrImg" src="https://s41.ax1x.com/2026/10/18/pnwgFDx.jpg" alt="收款码">
+                    <!-- 这里替换成了你上传的图片链接 -->
+                    <img class="qr-img" id="qrImg" src="https://raw.githubusercontent.com/kkkk33822-droid/my-images/refs/heads/main/mmexport1792390812929.jpg" alt="收款码">
                 </div>
                 <div class="qr-name">“土豪专享”</div>
                 <div class="qr-banner">渐变的赞赏码</div>
@@ -313,7 +314,7 @@
     <!-- 保存二维码弹窗 -->
     <div class="save-modal" id="saveModal">
         <div class="save-tip">👇 长按下方二维码保存至相册</div>
-        <img id="saveImg" src="https://s41.ax1x.com/2026/10/18/pnwgFDx.jpg" alt="长按保存">
+        <img id="saveImg" src="https://raw.githubusercontent.com/kkkk33822-droid/my-images/refs/heads/main/mmexport1792390812929.jpg" alt="长按保存">
         <div class="save-warn">⚠ 如果无法保存，请直接截图保存</div>
         <button class="close-save" id="btnCloseSave">我知道了</button>
     </div>
@@ -366,7 +367,8 @@
         btnRefreshQR.addEventListener('click', () => {
             qrImg.style.display = 'none';
             qrPlaceholder.style.display = 'flex';
-            qrImg.src = 'https://s41.ax1x.com/2026/10/18/pnwgFDx.jpg?t=' + Date.now();
+            // 强制刷新图片
+            qrImg.src = 'https://raw.githubusercontent.com/kkkk33822-droid/my-images/refs/heads/main/mmexport1792390812929.jpg?t=' + Date.now();
             setTimeout(() => {
                 qrPlaceholder.style.display = 'none';
                 qrImg.style.display = 'block';
@@ -477,7 +479,6 @@
                     }, 1200);
                 } else {
                     loadingMask.classList.remove('show');
-                    // 现在即使失败，也不直接暴露具体原因，防止用户针对性造假
                     alert(
                         '❌ 后台未通过审核\n\n' +
                         '您上传的截图无法通过系统验证，请确认上传的是真实有效的支付成功截图。\n\n' +
