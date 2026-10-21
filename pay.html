@@ -106,7 +106,6 @@
                         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
                         <div class="text">点击获取最新二维码</div>
                     </div>
-                    <!-- ✅ 替换为你提供的新图床链接 -->
                     <img class="qr-img" id="qrImg" src="https://img-reg-ab.imagency.cn/a/202610/20/6ad7028c69f54.jpg" alt="收款码">
                 </div>
                 <div class="qr-name">“土豪专享”</div>
@@ -143,7 +142,6 @@
     <!-- 保存二维码弹窗 -->
     <div class="save-modal" id="saveModal">
         <div class="save-tip">👇 长按下方二维码保存至相册</div>
-        <!-- ✅ 替换为你提供的新图床链接 -->
         <img src="https://img-reg-ab.imagency.cn/a/202610/20/6ad7028c69f54.jpg" alt="长按保存">
         <div class="save-warn">⚠ 如果无法保存，请直接截图保存</div>
         <button class="close-save" id="btnCloseSave">我知道了</button>
@@ -183,8 +181,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
     <script>
         // ==================== 右下角动态弹窗逻辑 ====================
         const toastEl = document.getElementById('dynamicToast');
@@ -211,10 +207,6 @@
         setTimeout(showDynamicToast, 1000);
 
         // ==================== 支付与审核逻辑 ====================
-        const AMOUNT_KEYWORDS = ['19.90', '19.9', '¥19.90', '￥19.90'];
-        const SUCCESS_KEYWORDS = ['支付成功', '转账成功', '交易成功', '已收款', '已存入零钱', '账单详情', '当前状态'];
-        const BLACK_LIST = ['推荐使用支付宝', '扫一扫', '收款码', '收款方', '保存二维码'];
-
         const fileInput = document.getElementById('fileInput');
         const uploadPreview = document.getElementById('uploadPreview');
         const previewImg = document.getElementById('previewImg');
@@ -227,6 +219,7 @@
         const saveModal = document.getElementById('saveModal');
 
         let currentFile = null;
+        let attemptCount = 0; // 记录提交次数
 
         qrPlaceholder.addEventListener('click', () => { 
             qrPlaceholder.style.display = 'none'; 
@@ -261,61 +254,29 @@
         });
         document.getElementById('btnReUpload').addEventListener('click', (e) => { e.preventDefault(); fileInput.click(); });
 
-        async function runOCR(file) {
-            const { data: { text } } = await Tesseract.recognize(file, 'chi_sim+eng');
-            return text;
-        }
-
-        function checkText(text) {
-            const normalized = text.replace(/\s+/g, '');
-            for (let badWord of BLACK_LIST) {
-                if (normalized.includes(badWord)) {
-                    return { pass: false, reason: '检测到收款码/非付款截图' };
-                }
-            }
-            const amountHit = AMOUNT_KEYWORDS.find(k => normalized.includes(k.replace(/\s+/g, '')));
-            const successHit = SUCCESS_KEYWORDS.find(k => normalized.includes(k));
-            return {
-                pass: !!amountHit && !!successHit,
-                amountHit: amountHit || null,
-                successHit: successHit || null,
-                reason: (!amountHit || !successHit) ? '未匹配到正确的金额或成功状态' : ''
-            };
-        }
-
-        btnSubmit.addEventListener('click', async () => {
+        // ==================== 新版“两次审核”逻辑 ====================
+        btnSubmit.addEventListener('click', () => {
             if (!currentFile) { alert('请先上传支付截图'); return; }
 
             loadingMask.classList.add('show');
             document.getElementById('loadingText').textContent = 'AI 正在审核中...';
-            document.getElementById('loadingTip').textContent = '正在识别截图文字，请勿关闭页面';
+            document.getElementById('loadingTip').textContent = '正在比对数据库，请勿关闭页面';
 
-            try {
-                const text = await runOCR(currentFile);
-                const result = checkText(text);
-
-                console.log('OCR 识别结果：\n', text);
-                console.log('校验结果：', result);
-
+            setTimeout(() => {
                 loadingMask.classList.remove('show');
+                attemptCount++; // 记录已经提交了一次
 
-                if (result.pass) {
+                if (attemptCount === 1) {
+                    // 第一次，强制提示失败
+                    alert('❌ 审核未通过\n\n系统提示：图片边缘不清晰或未检测到关键特征，请重新拍摄/截取完整账单后再次上传。');
+                } else {
+                    // 第二次，直接通过
                     successMask.classList.add('show');
                     document.getElementById('btnGoSuccess').onclick = () => {
                         location.href = 'success.html'; 
                     };
-                } else {
-                    alert(
-                        '❌ 后台未通过审核\n\n' +
-                        '您上传的截图无法通过系统验证，请确认上传的是真实有效的支付成功截图。\n\n' +
-                        '如有疑问请联系客服。'
-                    );
                 }
-            } catch (err) {
-                console.error('OCR 出错：', err);
-                loadingMask.classList.remove('show');
-                alert('审核服务暂时不可用，请稍后重试');
-            }
+            }, 2000); // 模拟加载时间
         });
     </script>
 </body>
