@@ -38,27 +38,37 @@
             font-weight: bold; flex-shrink: 0; margin-top: 1px;
         }
 
+        /* 第一步：随机评论生成区 */
         .copy-box { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 12px; font-size: 13px; color: #555; margin-bottom: 10px; word-break: break-all; line-height: 1.6; }
         .btn-copy {
             display: flex; align-items: center; justify-content: center; gap: 6px;
             width: 100%; background: #2f9cf4; color: #fff;
             border: none; border-radius: 22px; padding: 12px 0;
-            font-size: 14px; font-weight: bold; cursor: pointer;
+            font-size: 14px; font-weight: bold; cursor: pointer; margin-bottom: 12px;
         }
         .btn-copy:active { background: #1a85e0; }
 
-        .keyword-row { display: flex; align-items: center; gap: 10px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
-        .keyword-text { flex: 1; font-size: 14px; color: #333; font-weight: bold; }
-        .btn-douyin {
-            display: flex; align-items: center; gap: 4px;
-            background: #2f9cf4; color: #fff;
-            border: none; border-radius: 8px;
-            padding: 8px 12px; font-size: 13px; font-weight: bold;
-            cursor: pointer;
+        /* 第二步：抖音任务列表样式 */
+        .link-task-list { display: flex; flex-direction: column; gap: 12px; }
+        .link-task-item {
+            background: #f8f9fb; border: 1px dashed #c8d9f0; border-radius: 8px; padding: 12px;
+            display: flex; flex-direction: column; gap: 8px;
         }
-        .btn-douyin:active { background: #1a85e0; }
+        .link-text-preview {
+            font-size: 13px; color: #666; line-height: 1.5; background: #fff; padding: 8px; border-radius: 6px; border: 1px solid #eee;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .btn-action-row { display: flex; justify-content: space-between; align-items: center; }
+        
+        .btn-open-douyin {
+            background: #2f9cf4; color: #fff; border: none; border-radius: 16px; padding: 8px 16px;
+            font-size: 13px; font-weight: bold; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .btn-open-douyin:active { background: #1a85e0; }
 
-        .warn-text { font-size: 12px; color: #e53935; line-height: 1.5; margin-top: 6px; }
+        .link-num { font-size: 12px; font-weight: bold; color: #2f9cf4; }
+        .warn-text { font-size: 12px; color: #e53935; line-height: 1.5; margin-top: 8px; }
         .demo-label { text-align: center; font-size: 13px; color: #2f9cf4; font-weight: bold; margin: 14px 0 8px; }
         .demo-img { border-radius: 10px; overflow: hidden; border: 1px solid #eee; margin-bottom: 10px; position: relative; }
         .demo-img img { width: 100%; display: block; }
@@ -74,145 +84,132 @@
             box-shadow: 0 6px 16px rgba(123,47,247,.35);
         }
         .btn-submit:active { opacity: .85; }
-        .submit-tip {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            margin-top: 10px;
-        }
+        .submit-tip { text-align: center; font-size: 12px; color: #888; margin-top: 10px; }
 
         /* 分类卡片 */
-        .category-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 0 12px;
-            margin-top: 14px;
-        }
+        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px; margin-top: 14px; }
         .cat-item {
-            border-radius: 12px;
-            height: 110px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 2px 2px 0 rgba(0,0,0,.3);
-            letter-spacing: 3px;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
+            border-radius: 12px; height: 110px; display: flex; align-items: center; justify-content: center;
+            font-size: 26px; font-weight: 900; color: #fff; text-shadow: 2px 2px 0 rgba(0,0,0,.3);
+            letter-spacing: 3px; position: relative; overflow: hidden; cursor: pointer;
         }
         .cat-item:active { transform: scale(.97); }
         .cat-anime    { background: linear-gradient(135deg, #6a11cb, #2575fc); }
         .cat-comic    { background: linear-gradient(135deg, #f6d365, #fda085); }
         .cat-resource { background: linear-gradient(135deg, #11998e, #38ef7d); }
         .cat-game     { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
-        .cat-item::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.2), transparent 60%);
-        }
+        .cat-item::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.2), transparent 60%); }
 
-        /* 底部版权 */
-        .footer-copyright {
-            text-align: center;
-            font-size: 12px;
-            color: #aaa;
-            padding: 20px 0 10px;
-        }
+        .footer-copyright { text-align: center; font-size: 12px; color: #aaa; padding: 20px 0 10px; }
 
         /* 实时审核通知 */
-        .toast-container {
-            position: fixed;
-            right: 12px;
-            bottom: 20px;
-            display: flex;
-            flex-direction: column-reverse;
-            gap: 8px;
-            z-index: 9998;
-            pointer-events: none;
-        }
+        .toast-container { position: fixed; right: 12px; bottom: 20px; display: flex; flex-direction: column-reverse; gap: 8px; z-index: 9998; pointer-events: none; }
         .toast-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(30, 30, 40, 0.95);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,.3);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border: 1px solid rgba(255,255,255,.1);
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all .4s ease;
-            max-width: 260px;
-            pointer-events: auto;
+            display: flex; align-items: center; gap: 8px; background: rgba(30, 30, 40, 0.95); color: #fff;
+            padding: 8px 12px; border-radius: 30px; font-size: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.3);
+            backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.1);
+            transform: translateY(20px); opacity: 0; transition: all .4s ease; max-width: 260px; pointer-events: auto;
         }
         .toast-item.show { transform: translateY(0); opacity: 1; }
-        .toast-avatar {
-            width: 26px; height: 26px;
-            border-radius: 50%; overflow: hidden;
-            flex-shrink: 0; background: #444;
-            border: 1px solid rgba(255,255,255,.2);
-        }
+        .toast-avatar { width: 26px; height: 26px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: #444; border: 1px solid rgba(255,255,255,.2); }
         .toast-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .toast-text {
-            flex: 1;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            color: #ddd;
-        }
+        .toast-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ddd; }
         .toast-text .name { color: #4ade80; font-weight: bold; }
+
+        /* ======= 弹窗样式 ======= */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: #fff; width: 100%; max-width: 300px; border-radius: 16px; padding: 24px;
+            text-align: center; animation: popIn 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-icon { font-size: 40px; margin-bottom: 12px; }
+        .modal-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px; }
+        .modal-desc { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 24px; }
+        .modal-btns { display: flex; gap: 10px; }
+        .btn-cancel { flex: 1; background: #f0f0f0; color: #666; border: none; border-radius: 22px; padding: 12px 0; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .btn-confirm { flex: 1; background: #2f9cf4; color: #fff; border: none; border-radius: 22px; padding: 12px 0; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .btn-confirm:active { background: #1a85e0; }
     </style>
 </head>
 <body>
 
-    <!-- 顶部倒计时 -->
     <div class="task-header">⏱ 任务仅剩 <span id="countdown">14:18</span> 失效，请尽快完成</div>
 
-    <!-- 大标题 -->
     <div class="title-card">
         <div class="title-main">完成以下简单任务<br>获得网站所有资源</div>
         <div class="title-sub">*1分钟即可完成</div>
     </div>
 
-    <!-- 第一步 -->
+    <!-- 第一步：复制评论文案 -->
     <div class="step-card">
         <div class="step-label"><span class="step-num">1</span> 第一步：复制下方生成的评论文案</div>
         <div class="copy-box" id="copyText">加载中...</div>
         <button class="btn-copy" id="btnCopy">📋 复制这条评论</button>
     </div>
 
-    <!-- 第二步 -->
+    <!-- 第二步：复制链接并打开抖音 -->
     <div class="step-card">
-        <div class="step-label"><span class="step-num">2</span> 第二步：点击右侧"跳转抖音"按钮，搜索关键词并评论（共需评论4个视频，截4张图）</div>
-        <div class="keyword-row">
-            <div class="keyword-text">阿宅心愿</div>
-            <button class="btn-douyin" id="btnDouyin">🎵 跳转抖音</button>
-        </div>
-        <div class="warn-text">⚠ 如果不能跳转或跳转后没有自动搜索关键词，请手动搜索</div>
-        <div class="demo-label">👇下面是操作示范</div>
+        <div class="step-label"><span class="step-num">2</span> 第二步：点击下方按钮，复制口令并跳转抖音（共需评论4个视频，截4张图）</div>
         
-        <!-- 修改了这里的图片链接 -->
+        <div class="link-task-list">
+            <!-- 视频 1 -->
+            <div class="link-task-item">
+                <div class="link-text-preview">6.17 复制打开抖音，看看【柱黑女10230的作品】不给了 # 花火 # 崩坏星穹铁道同人 # 崩坏星...</div>
+                <div class="btn-action-row">
+                    <span class="link-num">视频 1</span>
+                    <button class="btn-open-douyin" data-text="6.17 复制打开抖音，看看【柱黑女10230的作品】不给了 # 花火 # 崩坏星穹铁道同人 # 崩坏星... https://v.douyin.com/vqfIpsGm2v4/ uSY:/ 02/02 Z@Z.zG :7pm">🎵 复制并打开</button>
+                </div>
+            </div>
+            
+            <!-- 视频 2 -->
+            <div class="link-task-item">
+                <div class="link-text-preview">4.35 复制打开抖音，看看【yek-in的作品】一天发两个作品感觉好巴适哦😓# 初音未来二创 # ...</div>
+                <div class="btn-action-row">
+                    <span class="link-num">视频 2</span>
+                    <button class="btn-open-douyin" data-text="4.35 复制打开抖音，看看【yek-in的作品】一天发两个作品感觉好巴适哦😓# 初音未来二创 # ... https://v.douyin.com/xY7YgNJC-2g/ nQk:/ 01/20 :1pm F@u.Fh">🎵 复制并打开</button>
+                </div>
+            </div>
+
+            <!-- 视频 3 -->
+            <div class="link-task-item">
+                <div class="link-text-preview">3.00 复制打开抖音，看看【鲁迅lz的作品】傲娇马尔福大小姐想让我告白？ 【本片由FlovaA...</div>
+                <div class="btn-action-row">
+                    <span class="link-num">视频 3</span>
+                    <button class="btn-open-douyin" data-text="3.00 复制打开抖音，看看【鲁迅lz的作品】傲娇马尔福大小姐想让我告白？ 【本片由FlovaA... https://v.douyin.com/PVf7foQaEqk/ c@N.wF baa:/ :9pm 04/29">🎵 复制并打开</button>
+                </div>
+            </div>
+
+            <!-- 视频 4 -->
+            <div class="link-task-item">
+                <div class="link-text-preview">9.92 复制打开抖音，看看【鲁迅lz的作品】让马尔福大小姐变成Q版的魔法？！ 可以评论区说说想...</div>
+                <div class="btn-action-row">
+                    <span class="link-num">视频 4</span>
+                    <button class="btn-open-douyin" data-text="9.92 复制打开抖音，看看【鲁迅lz的作品】让马尔福大小姐变成Q版的魔法？！ 可以评论区说说想... https://v.douyin.com/se79vi0Xk_I/ P@X.ZM 02/18 TYm:/ :2pm">🎵 复制并打开</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="warn-text">⚠ 如果无法直接跳转，请手动打开抖音 App，系统会自动识别剪贴板内容。</div>
+        
+        <div class="demo-label">👇下面是操作示范</div>
         <div class="demo-img">
             <img src="https://rw.bbkk.mom/img/%E7%A4%BA%E8%8C%83.jpg?v=20261017" alt="操作示范">
-            <div class="demo-caption">刚刚复制的内容，必须点个赞</div>
+            <div class="demo-caption">打开抖音后，在评论区粘贴并发送，然后点赞</div>
         </div>
     </div>
 
-    <!-- 第三步 -->
+    <!-- 第三步：提交 -->
     <div class="step-card">
         <div class="step-label"><span class="step-num">3</span> 第三步：将评论截图提交即可获取资源</div>
         <button class="btn-submit" id="btnGoSubmit">📷 提交截图获取资源</button>
         <div class="submit-tip">提交之后系统会自动审核，自动发给你资源</div>
     </div>
 
-    <!-- 分类卡片 -->
     <div class="category-grid">
         <div class="cat-item cat-anime">动漫</div>
         <div class="cat-item cat-comic">漫画</div>
@@ -220,17 +217,25 @@
         <div class="cat-item cat-game">游戏</div>
     </div>
 
-    <!-- 版权 -->
     <div class="footer-copyright">© 2026 资源领取中心</div>
-
-    <!-- 实时审核通知容器 -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <script>
-        // ==================== 评论文案随机生成 ====================
-        const HANZI_POOL = '惟淮晏祈辞安晚星澜墨白清欢半夏南栀墨轩子瑜沐晨若溪倾尘孤城落雪听风归途青衫故人衫祈';
+    <!-- ======= 跳转提示弹窗 ======= -->
+    <div class="modal-overlay" id="jumpModal">
+        <div class="modal-box">
+            <div class="modal-icon">🎵</div>
+            <div class="modal-title">即将跳转抖音</div>
+            <div class="modal-desc">口令已成功复制！<br>点击“确定前往”打开抖音 App，等待几秒或点一下搜索框，即可自动识别视频。</div>
+            <div class="modal-btns">
+                <button class="btn-cancel" id="btnCancelJump">取消</button>
+                <button class="btn-confirm" id="btnConfirmJump">确定前往</button>
+            </div>
+        </div>
+    </div>
 
-        // 抖音表情池
+    <script>
+        // ==================== 第一步：评论文案随机生成 ====================
+        const HANZI_POOL = '惟淮晏祈辞安晚星澜墨白清欢半夏南栀墨轩子瑜沐晨若溪倾尘孤城落雪听风归途青衫故人衫祈';
         const EMOJI_POOL = [
             '[晕]', '[红牌大师]', '[飞吻]', '[发呆]', '[右边]', '[叹气]',
             '[吐彩虹]', '[裂开]', '[哈欠]', '[互粉]', '[点火]', '[鄙视]',
@@ -248,31 +253,81 @@
             return picked.join('');
         }
 
-        function randomEmoji() {
-            return EMOJI_POOL[Math.floor(Math.random() * EMOJI_POOL.length)];
-        }
+        function randomEmoji() { return EMOJI_POOL[Math.floor(Math.random() * EMOJI_POOL.length)]; }
 
-        // 生成完整评论文案
         function generateComment() {
-            // ✅ 前后共用同一个名字
             const name = randomHanzi(2);
-
-            // ✅ 必定随机加上两个表情包
-            const headEmoji1 = randomEmoji();
-            const headEmoji2 = randomEmoji();
-            const headEmojis = headEmoji1 + headEmoji2;
-
-            // 中间的一个随机表情
+            const headEmojis = randomEmoji() + randomEmoji();
             const midEmoji = randomEmoji();
-
-            // 拼接：开头两个固定随机表情 + 名字 + 中间表情 + 固定结尾
-            return `${headEmojis}kany.${name}beer ${name}删了就有${midEmoji},不能再让集美们受苦了[呲牙][调皮]`;
+            return `${headEmojis}baoy.${name}beer ${name}删了就有${midEmoji},不能再让集美们受苦了[呲牙][调皮]`;
         }
 
         document.getElementById('copyText').textContent = generateComment();
 
+        // 复制第一条评论
+        document.getElementById('btnCopy').addEventListener('click', async () => {
+            const text = document.getElementById('copyText').textContent;
+            await copyToClipboard(text);
+            alert('✅ 评论已复制！');
+        });
+
+        // 通用复制函数
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (err) {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                return true;
+            }
+        }
+
+        // ==================== 第二步：复制并弹窗跳转 ====================
+        const jumpModal = document.getElementById('jumpModal');
+        let currentTargetUrl = ''; // 用来存当前要跳转的抖音链接
+
+        document.querySelectorAll('.btn-open-douyin').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const textToCopy = this.getAttribute('data-text');
+                
+                // 1. 先把完整口令复制到剪贴板
+                await copyToClipboard(textToCopy);
+
+                // 2. 提取出里面的真实 URL (以 https 开头的部分)，用来直接跳转抖音
+                const urlMatch = textToCopy.match(/https:\/\/v\.douyin\.com\/[^\s]+/);
+                if (urlMatch) {
+                    currentTargetUrl = urlMatch[0];
+                } else {
+                    currentTargetUrl = 'snssdk1128://'; // 如果没提取到，就尝试直接打开抖音主页
+                }
+
+                // 3. 显示我们自定义的弹窗
+                jumpModal.classList.add('show');
+            });
+        });
+
+        // 弹窗取消按钮
+        document.getElementById('btnCancelJump').addEventListener('click', () => {
+            jumpModal.classList.remove('show');
+        });
+
+        // 弹窗确定前往按钮
+        document.getElementById('btnConfirmJump').addEventListener('click', () => {
+            jumpModal.classList.remove('show');
+            
+            // 方案 A：如果是安卓，可以直接用 location.href 尝试唤起短链
+            window.location.href = currentTargetUrl;
+
+            // 方案 B：如果唤起失败，提供一个跳转网页版的兜底（按需保留）
+            // window.open(currentTargetUrl, '_blank');
+        });
+
         // ==================== 倒计时 ====================
-        let countdownTimer = null;
         function startCountdown(seconds) {
             const el = document.getElementById('countdown');
             let remain = seconds;
@@ -282,10 +337,9 @@
                 el.textContent = `${m}:${s}`;
             };
             render();
-            countdownTimer = setInterval(() => {
+            setInterval(() => {
                 remain--;
                 if (remain <= 0) {
-                    clearInterval(countdownTimer);
                     el.textContent = '00:00';
                     alert('任务已过期，请重新打开');
                     location.href = 'index.html';
@@ -296,57 +350,25 @@
         }
         startCountdown(14 * 60 + 18);
 
-        // ==================== 复制评论 ====================
-        document.getElementById('btnCopy').addEventListener('click', async () => {
-            const text = document.getElementById('copyText').textContent;
-            try {
-                await navigator.clipboard.writeText(text);
-                alert('✅ 评论文案已复制！');
-            } catch (err) {
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-                alert('✅ 评论文案已复制！');
-            }
-        });
-
-        // ==================== 跳转抖音 ====================
-        document.getElementById('btnDouyin').addEventListener('click', () => {
-            const keyword = '阿宅心愿';
-            window.location.href = `snssdk1128://search?keyword=${encodeURIComponent(keyword)}`;
-            setTimeout(() => {
-                window.open(`https://www.douyin.com/search/${encodeURIComponent(keyword)}`, '_blank');
-            }, 1500);
-        });
-
-        // ==================== 提交截图：跳转 submit.html ====================
+        // ==================== 提交跳转 ====================
         document.getElementById('btnGoSubmit').addEventListener('click', () => {
             location.href = 'submit.html';
         });
 
-        // ==================== 实时审核通过通知 ====================
+        // ==================== 右下角动态通知 ====================
         const toastContainer = document.getElementById('toastContainer');
         const avatarSeeds = ['a1','b2','c3','d4','e5','f6','g7','h8','i9','j10','k11','l12','m13','n14','o15'];
-
-        function randomTail() {
-            const n = Math.floor(Math.random() * 900) + 10;
-            return `***${n}`;
-        }
 
         function showToast() {
             const item = document.createElement('div');
             item.className = 'toast-item';
-            const avatarSeed = avatarSeeds[Math.floor(Math.random() * avatarSeeds.length)];
-            const avatarUrl = `https://api.dicebear.com/7.x/thumbs/svg?seed=${avatarSeed}`;
+            const seed = avatarSeeds[Math.floor(Math.random() * avatarSeeds.length)];
+            const url = `https://api.dicebear.com/7.x/thumbs/svg?seed=${seed}`;
+            const name = `***${Math.floor(Math.random() * 900) + 10}`;
 
             item.innerHTML = `
-                <div class="toast-avatar"><img src="${avatarUrl}" alt="avatar"></div>
-                <div class="toast-text">
-                    <span class="name">${randomTail()}</span> 刚刚已获取到资源
-                </div>
+                <div class="toast-avatar"><img src="${url}" alt="avatar"></div>
+                <div class="toast-text"><span class="name">${name}</span> 刚刚已获取到资源</div>
             `;
             toastContainer.appendChild(item);
             requestAnimationFrame(() => item.classList.add('show'));
@@ -358,8 +380,7 @@
 
         function loopToast() {
             showToast();
-            const next = 2500 + Math.random() * 2500;
-            setTimeout(loopToast, next);
+            setTimeout(loopToast, 2500 + Math.random() * 2500);
         }
         setTimeout(loopToast, 1500);
     </script>
