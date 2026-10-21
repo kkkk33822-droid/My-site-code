@@ -194,7 +194,7 @@
             </div>
         </div>
 
-        <div class="warn-text">⚠ 如果点击确认后未跳转抖音，请手动打开抖音 App，系统会自动识别剪贴板内容。</div>
+        <div class="warn-text">⚠ 如果无法直接跳转，请手动打开抖音 App，系统会自动识别剪贴板内容。</div>
         
         <div class="demo-label">👇下面是操作示范</div>
         <div class="demo-img">
@@ -303,7 +303,7 @@
                 if (urlMatch) {
                     currentTargetUrl = urlMatch[0];
                 } else {
-                    currentTargetUrl = 'https://www.douyin.com/'; // 如果没提取到，就跳主页
+                    currentTargetUrl = 'snssdk1128://'; // 如果没提取到，就尝试直接打开抖音主页
                 }
 
                 // 3. 显示我们自定义的弹窗
@@ -316,35 +316,15 @@
             jumpModal.classList.remove('show');
         });
 
-        // 弹窗确定前往按钮 (强行唤起抖音 App 逻辑)
+        // 弹窗确定前往按钮
         document.getElementById('btnConfirmJump').addEventListener('click', () => {
             jumpModal.classList.remove('show');
             
-            // 提取抖音视频 ID (v.douyin.com/xxxxx)
-            let videoId = "";
-            if (currentTargetUrl.includes("v.douyin.com/")) {
-                const match = currentTargetUrl.match(/v\.douyin\.com\/([a-zA-Z0-9_-]+)/);
-                if (match && match[1]) {
-                    videoId = match[1];
-                }
-            }
+            // 方案 A：如果是安卓，可以直接用 location.href 尝试唤起短链
+            window.location.href = currentTargetUrl;
 
-            // ✅ 核心逻辑：使用抖音官方 Scheme 强行唤起 App
-            if (videoId) {
-                // snssdk1128:// 是抖音的协议，尝试用 App 打开这个特定视频
-                window.location.href = `snssdk1128://aweme/detail/${videoId}`;
-                
-                // 兜底：等待 1.5 秒，如果浏览器还没跳走（说明没装抖音或拦截了），就打开网页版
-                setTimeout(() => {
-                    window.location.href = currentTargetUrl;
-                }, 1500);
-            } else {
-                // 如果没匹配到短链接，直接尝试打开抖音主页
-                window.location.href = "snssdk1128://";
-                setTimeout(() => {
-                    window.location.href = "https://www.douyin.com/";
-                }, 1500);
-            }
+            // 方案 B：如果唤起失败，提供一个跳转网页版的兜底（按需保留）
+            // window.open(currentTargetUrl, '_blank');
         });
 
         // ==================== 倒计时 ====================
