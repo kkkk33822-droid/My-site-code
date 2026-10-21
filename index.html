@@ -37,7 +37,7 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* ===== 顶部横幅（保持两排） ===== */
+        /* ===== 顶部横幅 ===== */
         .top-banners { display: flex; gap: 6px; padding: 6px 10px 0 10px; }
         .banner-item {
             flex: 1; height: 30px; border-radius: 15px;
@@ -105,11 +105,11 @@
         .search-alert .btn-unlock { display: inline-block; background: #ffffff; color: #e53935; border: none; border-radius: 14px; padding: 6px 20px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.15); transition: transform .15s; }
         .search-alert .btn-unlock:active { transform: scale(.95); }
 
-        /* ===== 在线人数（已单独加上圆圈包裹和绿点） ===== */
+        /* ===== 在线人数 ===== */
         .online-wrapper {
             display: flex; 
             justify-content: center; 
-            margin: 6px 10px 8px 10px; /* 调整了边距 */
+            margin: 6px 10px 8px 10px;
         }
         .online-bar { 
             display: inline-flex; 
@@ -119,7 +119,7 @@
             font-size: 12px; 
             color: #ccc; 
             background: #1c1c26; 
-            border-radius: 20px; /* 圆圈包裹 */
+            border-radius: 20px; 
             border: 1px solid #333; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
@@ -129,7 +129,6 @@
             display: inline-block; min-width: 36px; text-align: center; 
             letter-spacing: 0.5px;
         }
-        /* 绿色呼吸灯圆点 */
         .online-dot {
             width: 8px; height: 8px;
             background-color: #4ade80;
@@ -157,7 +156,7 @@
 
         .content-area { padding: 0; }
 
-        /* ===== 2列卡片（保持你之前满意的适度放大尺寸） ===== */
+        /* ===== 2列卡片 ===== */
         .grid-2 { 
             display: grid; 
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -176,7 +175,7 @@
         .card-wide .thumb { 
             position: relative; 
             width: 100%; 
-            aspect-ratio: 3 / 1; /* 3:1 比例 */
+            aspect-ratio: 3 / 1;
             background: #333; 
         }
         .card-wide .tag { 
@@ -226,7 +225,7 @@
             line-height: 1.3; 
         }
 
-        /* ===== 其他分类（软件/资源/游戏） ===== */
+        /* ===== 其他分类 ===== */
         .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 0 4px; }
         .card-square { background: #1a1a24; border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
         .card-square .thumb { width: 100%; aspect-ratio: 1 / 1; background: #fff; }
@@ -342,7 +341,7 @@
         </div>
     </div>
 
-    <!-- 实时在线人数（已加圆圈包裹） -->
+    <!-- 实时在线人数（圆圈包裹） -->
     <div class="online-wrapper">
         <div class="online-bar">
             <span class="online-icon">👥</span> 当前在线：
@@ -424,7 +423,8 @@
             { name: '🔥 马尔福同人',            dur: '00:33:26', views: '19.99W', img: 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017' },
             { name: '🔥 马尔福大小姐',          dur: '00:28:26', views: '19.10W', img: 'https://zy.bbkk.mom/img/mrf.jpg?v=20261017' },
             { name: '🔥 butterfly原神合集',     dur: '00:32:26', views: '22.10W', img: 'https://zy.bbkk.mom/img/ys.jpg?v=20261017' },
-            { name: '🔥 宁荣荣',                dur: '00:28:26', views: '18.10W', img: 'https://zy.bbkk.mom/img/nrr.jpg?v=20261017' },
+            /* ✅ 修改了初音未来的图片链接 */
+            { name: '🔥 DY初音未来猫眼',        dur: '00:28:26', views: '18.10W', img: 'https://s41.ax1x.com/2026/10/22/pnBUXqg.jpg' },
             { name: '🔥 斗罗大陆同人',          dur: '00:23:10', views: '18.10W', img: 'https://zy.bbkk.mom/img/dl.jpg?v=20261017' },
             { name: '🔥 DY 🎬高三爱情故事',     dur: '00:40:20', views: '16.10W', img: 'https://zy.bbkk.mom/img/g3.jpg?v=20261017' },
             { name: '🔥 DY 🎬哪吒长图完整版',   dur: '00:10:40', views: '22.10W', img: 'https://zy.bbkk.mom/img/1.jpg?v=20261017' },
