@@ -55,7 +55,7 @@
         .success-box p { font-size: 14px; color: #666; margin-bottom: 24px; }
         .success-box .btn-ok { display: block; width: 100%; background: linear-gradient(90deg, #7b2ff7, #2d6cff); color: #fff; border: none; border-radius: 25px; padding: 12px 0; font-size: 16px; font-weight: bold; cursor: pointer; }
 
-        /* ======== 紫色聚合页 (图三) ======== */
+        /* ======== 紫色聚合页 ======== */
         #link3Interface { display: none; background: linear-gradient(180deg, #e8dcff 0%, #b59cff 30%, #7c3aed 100%); min-height: 100vh; position: absolute; inset: 0; padding: 40px 20px; text-align: center; z-index: 99; }
         .l3-home-icon { position: absolute; left: 20px; top: 20px; font-size: 20px; color: #333; background: rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .l3-top-actions { position: absolute; right: 20px; top: 20px; display: flex; gap: 10px; }
@@ -103,7 +103,7 @@
         </div>
     </div>
 
-    <!-- 2. 紫色 Link3 网盘页 (图三) -->
+    <!-- 2. 紫色聚合页 -->
     <div id="link3Interface">
         <div class="l3-home-icon">🏠</div>
         <div class="l3-top-actions">
@@ -112,30 +112,28 @@
         </div>
         <div class="l3-avatar"><img src="https://picsum.photos/seed/avatar2/200/200" alt="头像"></div>
         <div class="l3-title">资源获取站</div>
-        <div class="l3-desc">资源都在下面的网盘里面，一定要把网盘里面的资源转存到你自己的网盘。因为随时会失效。下面网盘资源。请全部保存到你自己的网盘</div>
+        <div class="l3-desc">资源都在下面的网盘里面，一定要把网盘里面的资源转存到你自己的网盘。因为随时会失效。请全部保存到你自己的网盘</div>
         <div class="l3-domain-pill">link3.cc/qq2255 <span>📋</span></div>
+        
         <div class="l3-link-list">
-            <a href="https://drive.uc.cn" class="l3-link-item" target="_blank">
+            <!-- 迅雷网盘 (替换为你的实际链接) -->
+            <a href="https://pan.xunlei.com/s/VP4UHK068Dd7T2FpVNifM48fA1?pwd=j5jf#" class="l3-link-item" target="_blank">
                 <div class="l3-icon"><svg viewBox="0 0 48 48"><path d="M24 8C15.163 8 8 15.163 8 24s7.163 16 16 16 16-7.163 16-16S32.837 8 24 8zm-1 23h-2v-2h2v2zm0-4h-2V13h2v14zm4 4h-2v-2h2v2zm0-4h-2V13h2v14z" fill="#fff"/></svg></div>
-                <div class="l3-text">资源1=uc网盘（优先获取）</div>
-                <div class="l3-arrow">›</div>
-            </a>
-            <a href="https://pan.quark.cn" class="l3-link-item" target="_blank">
-                <div class="l3-icon" style="background:#2a6cf5;"><svg viewBox="0 0 48 48"><path d="M24 10A14 14 0 1010 24a14 14 0 0014 14 14 14 0 0014-14A14 14 0 0024 10zm0 24a10 10 0 1110-10 10 10 0 01-10 10z" fill="#fff"/></svg></div>
-                <div class="l3-text">资源2=夸克网盘（也保存到自己的网盘）</div>
+                <div class="l3-text">[迅雷]资源合集（先保存）</div>
                 <div class="l3-arrow">›</div>
             </a>
         </div>
-        <div class="l3-footer"><div class="logo">🌐 Link3.cc</div><div>举报</div><div style="margin-top: 15px;"><span style="background:#ff5c9d; padding:10px 30px; border-radius:30px; color:#fff; font-weight:bold;">免费制作Link3聚合页</span></div></div>
+
+        <div class="l3-footer">
+            <div style="margin-top: 15px;"><span style="background:#ff5c9d; padding:10px 30px; border-radius:30px; color:#fff; font-weight:bold;">免费制作Link3聚合页</span></div>
+        </div>
     </div>
 
-    <!-- Loading -->
+    <!-- Loading & 弹窗 -->
     <div class="loading-mask" id="loadingMask">
         <div class="spinner"></div>
         <div id="loadingText">正在提交，请稍候...</div>
     </div>
-
-    <!-- 提交成功弹窗 -->
     <div class="success-modal-mask" id="successMask">
         <div class="success-box">
             <div class="icon">🎉</div>
@@ -204,16 +202,12 @@
             loadingMask.classList.add('show');
             loadingMask.querySelector('#loadingText').textContent = '正在提交，请稍候...';
 
-            // 模拟提交
             setTimeout(() => {
                 loadingMask.classList.remove('show');
-                // 弹出成功提示框
                 successMask.classList.add('show');
                 
-                // 点击确定
                 document.getElementById('btnGoLink3').onclick = () => {
                     successMask.classList.remove('show');
-                    // 隐藏上传界面，直接在当前页变身为紫色网盘页面
                     document.getElementById('uploadInterface').style.display = 'none';
                     document.getElementById('link3Interface').style.display = 'block';
                     window.scrollTo(0, 0);
