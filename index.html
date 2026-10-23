@@ -450,8 +450,10 @@
 
 
         // ==================== 数据列表 ====================
-        // ✅ 更新了时长及空字段
+        // ✅ 在数组最前面插入了两个新视频
         const HOT_DATA = [
+            { name: '🔥 若娜瓦同人',            dur: '00:28:26', views: '18.10W', img: 'https://zy.bbkk.mom/img/nwn.jpg?v=20260833' },
+            { name: '🔥 糯米天师',              dur: '00:28:26', views: '18.10W', img: 'https://zy.bbkk.mom/img/nmi.jpg?v=20260833' },
             { name: '🔥 马尔福同人',            dur: '07:36',    views: '19.99W', img: 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017' },
             { name: '🔥 马尔福大小姐',          dur: '00:28:26', views: '19.10W', img: 'https://zy.bbkk.mom/img/mrf.jpg?v=20261017' },
             { name: '🔥 butterfly原神合集',     dur: '00:32:26', views: '22.10W', img: 'https://zy.bbkk.mom/img/ys.jpg?v=20261017' },
@@ -582,7 +584,6 @@
         const catSubtitle = document.getElementById('catSubtitle');
         const pagination = document.getElementById('pagination');
 
-        // ✅ 优化了渲染逻辑，如果 dur 为空，就不显示时间框
         function renderHot() {
             contentArea.innerHTML = '<div class="grid-2">' + HOT_DATA.map(item => `
                 <div class="card-wide" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
@@ -742,7 +743,6 @@
                 modalCover.src = item.img || '';
                 modalName.textContent = item.name || '获取资源';
                 modalViews.textContent = item.views || '0';
-                // ✅ 弹窗里的时间也能自适应，如果没有时间就不显示
                 modalDuration.textContent = item.dur || ''; 
                 modalDuration.parentElement.style.display = item.dur ? 'flex' : 'none';
             } else {
