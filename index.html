@@ -450,55 +450,55 @@
 
 
         // ==================== 数据列表 ====================
-        // ✅ 在数组最前面插入了两个新视频
+        // ✅ 播放量已改为动态生成的占位符，渲染时会随机生成
         const HOT_DATA = [
-            { name: '🔥 若娜瓦同人',            dur: '00:28:26', views: '18.10W', img: 'https://zy.bbkk.mom/img/nwn.jpg?v=20260833' },
-            { name: '🔥 糯米天师',              dur: '00:28:26', views: '18.10W', img: 'https://zy.bbkk.mom/img/nmi.jpg?v=20260833' },
-            { name: '🔥 马尔福同人',            dur: '07:36',    views: '19.99W', img: 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017' },
-            { name: '🔥 马尔福大小姐',          dur: '00:28:26', views: '19.10W', img: 'https://zy.bbkk.mom/img/mrf.jpg?v=20261017' },
-            { name: '🔥 butterfly原神合集',     dur: '00:32:26', views: '22.10W', img: 'https://zy.bbkk.mom/img/ys.jpg?v=20261017' },
-            { name: '🔥 DY初音未来猫眼',        dur: '00:45',    views: '18.10W', img: 'https://s41.ax1x.com/2026/10/22/pnBUXqg.jpg' },
-            { name: '🔥 斗罗大陆同人',          dur: '00:23:10', views: '18.10W', img: 'https://zy.bbkk.mom/img/dl.jpg?v=20261017' },
-            { name: '🔥 DY 🎬高三爱情故事',     dur: '00:40:20', views: '16.10W', img: 'https://zy.bbkk.mom/img/g3.jpg?v=20261017' },
-            { name: '🔥 DY 🎬哪吒长图完整版',   dur: '',         views: '22.10W', img: 'https://zy.bbkk.mom/img/1.jpg?v=20261017' },
-            { name: '🔥 DY 🎬ai漫剧',           dur: '01:07:21', views: '21.15W', img: 'https://zy.bbkk.mom/img/02.jpg?v=20261017' },
-            { name: '🔥 DY 🎬无畏契约奶妈',     dur: '',         views: '17.98W', img: 'https://zy.bbkk.mom/img/2.jpg?v=20261017' },
-            { name: '🔥 DY 🎬暮蝶长图',         dur: '',         views: '18.10W', img: 'https://zy.bbkk.mom/img/3.jpg?v=20261017' },
-            { name: '3D甘露寺蜜璃',          dur: '00:13:45', views: '14.96W', img: 'https://zy.bbkk.mom/img/4.jpg?v=20261017' },
-            { name: 'aznyan07猫娘',          dur: '00:35',    views: '19.10W', img: 'https://zy.bbkk.mom/img/5.jpg?v=20261017' },
-            { name: '3D蝴蝶忍',              dur: '00:37:45', views: '13.02W', img: 'https://zy.bbkk.mom/img/6.jpg?v=20261017' },
-            { name: '埃及猫',                dur: '09:42',    views: '24.34W', img: 'https://zy.bbkk.mom/img/7.jpg?v=20261017' },
-            { name: '鲨鱼',                  dur: '04:13',    views: '13.62W', img: 'https://zy.bbkk.mom/img/8.jpg?v=20261017' },
-            { name: '九柱会议',              dur: '00:14:10', views: '19.70W', img: 'https://zy.bbkk.mom/img/9.jpg?v=20261017' },
-            { name: '小马宝莉',              dur: '00:13:16', views: '13.68W', img: 'https://zy.bbkk.mom/img/10.jpg?v=20261017' },
-            { name: '绝区零二创',            dur: '04:54',    views: '16.61W', img: 'https://zy.bbkk.mom/img/11.jpg?v=20261017' },
-            { name: '火影鸣人小樱',          dur: '00:16:45', views: '13.85W', img: 'https://zy.bbkk.mom/img/12.jpg?v=20261017' },
-            { name: '原神二创',              dur: '13:25',    views: '14.63W', img: 'https://zy.bbkk.mom/img/13.jpg?v=20261017' },
-            { name: '南瓜派女孩',            dur: '03:28',    views: '23.04W', img: 'https://zy.bbkk.mom/img/14.jpg?v=20261017' },
-            { name: 'mignon',                dur: '00:16:45', views: '18.76W', img: 'https://zy.bbkk.mom/img/15.jpg?v=20261017' }
+            { name: '🔥 若娜瓦同人',            dur: '06:52',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/nwn.jpg?v=20260833' },
+            { name: '🔥 糯米天师',              dur: '03:28',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/nmi.jpg?v=20260833' },
+            { name: '🔥 马尔福同人',            dur: '07:36',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017' },
+            { name: '🔥 马尔福大小姐',          dur: '00:28:26', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/mrf.jpg?v=20261017' },
+            { name: '🔥 butterfly原神合集',     dur: '00:32:26', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/ys.jpg?v=20261017' },
+            { name: '🔥 DY初音未来猫眼',        dur: '00:45',    views: 'RANDOM', img: 'https://s41.ax1x.com/2026/10/22/pnBUXqg.jpg' },
+            { name: '🔥 斗罗大陆同人',          dur: '00:23:10', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/dl.jpg?v=20261017' },
+            { name: '🔥 DY 🎬高三爱情故事',     dur: '00:40:20', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/g3.jpg?v=20261017' },
+            { name: '🔥 DY 🎬哪吒长图完整版',   dur: '',         views: 'RANDOM', img: 'https://zy.bbkk.mom/img/1.jpg?v=20261017' },
+            { name: '🔥 DY 🎬ai漫剧',           dur: '01:07:21', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/02.jpg?v=20261017' },
+            { name: '🔥 DY 🎬无畏契约奶妈',     dur: '',         views: 'RANDOM', img: 'https://zy.bbkk.mom/img/2.jpg?v=20261017' },
+            { name: '🔥 DY 🎬暮蝶长图',         dur: '',         views: 'RANDOM', img: 'https://zy.bbkk.mom/img/3.jpg?v=20261017' },
+            { name: '3D甘露寺蜜璃',          dur: '00:13:45', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/4.jpg?v=20261017' },
+            { name: 'aznyan07猫娘',          dur: '00:35',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/5.jpg?v=20261017' },
+            { name: '3D蝴蝶忍',              dur: '00:37:45', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/6.jpg?v=20261017' },
+            { name: '埃及猫',                dur: '09:42',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/7.jpg?v=20261017' },
+            { name: '鲨鱼',                  dur: '04:13',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/8.jpg?v=20261017' },
+            { name: '九柱会议',              dur: '00:14:10', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/9.jpg?v=20261017' },
+            { name: '小马宝莉',              dur: '00:13:16', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/10.jpg?v=20261017' },
+            { name: '绝区零二创',            dur: '04:54',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/11.jpg?v=20261017' },
+            { name: '火影鸣人小樱',          dur: '00:16:45', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/12.jpg?v=20261017' },
+            { name: '原神二创',              dur: '13:25',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/13.jpg?v=20261017' },
+            { name: '南瓜派女孩',            dur: '03:28',    views: 'RANDOM', img: 'https://zy.bbkk.mom/img/14.jpg?v=20261017' },
+            { name: 'mignon',                dur: '00:16:45', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/15.jpg?v=20261017' }
         ];
 
         const ANIME_DATA = [
-            { name: '粉丝专属福利，限时开放浏览',    dur: '00:56:47', views: '3.28W',  img: 'https://zy.bbkk.mom/img/49.jpg?v=20261017' },
-            { name: '[强推] 高分好片，站内少有系列', dur: '00:30:53', views: '12.94W', img: 'https://zy.bbkk.mom/img/50.jpg?v=20261017' },
-            { name: '今日上新片单，看完直呼过瘾',    dur: '01:04:20', views: '7.92W',  img: 'https://zy.bbkk.mom/img/51.jpg?v=20261017' },
-            { name: '每周精选片单，本期内容超好看',  dur: '00:26:52', views: '4.61W',  img: 'https://zy.bbkk.mom/img/52.jpg?v=20261017' },
-            { name: '全套系列合集，一次看完全部',    dur: '00:52:44', views: '11.77W', img: 'https://zy.bbkk.mom/img/53.jpg?v=20261017' },
-            { name: '高分口碑影片，真心值得一看',    dur: '00:33:18', views: '6.33W',  img: 'https://zy.bbkk.mom/img/54.jpg?v=20261017' },
-            { name: '【合集】全套系列整理，一键观看', dur: '01:00:55', views: '13.49W', img: 'https://zy.bbkk.mom/img/55.jpg?v=20261017' },
-            { name: '平台热门推荐，观众热度超高',    dur: '00:43:26', views: '8.45W',  img: 'https://zy.bbkk.mom/img/56.jpg?v=20261017' },
-            { name: '会员专属片单，会员专享内容',    dur: '00:21:49', views: '5.91W',  img: 'https://zy.bbkk.mom/img/57.jpg?v=20261017' },
-            { name: 'VIP专属片库，随时点开观看',     dur: '00:19:36', views: '10.52W', img: 'https://zy.bbkk.mom/img/58.jpg?v=20261017' },
-            { name: '我的母亲',                      dur: '00:15:20', views: '1.20W',  img: 'https://zy.bbkk.mom/img/75.jpg?v=20261017' },
-            { name: '约而过家家',                    dur: '00:18:30', views: '2.50W',  img: 'https://zy.bbkk.mom/img/76.jpg?v=20261017' },
-            { name: '催眠之岛',                      dur: '00:22:15', views: '3.10W',  img: 'https://zy.bbkk.mom/img/77.jpg?v=20261017' },
-            { name: '2B小姐',                        dur: '00:12:40', views: '4.50W',  img: 'https://zy.bbkk.mom/img/78.jpg?v=20261017' },
-            { name: '紫阳花',                        dur: '00:20:10', views: '1.80W',  img: 'https://zy.bbkk.mom/img/79.jpg?v=20261017' },
-            { name: '润足',                          dur: '00:10:50', views: '2.20W',  img: 'https://zy.bbkk.mom/img/80.jpg?v=20261017' },
-            { name: '殷夫人',                        dur: '00:16:20', views: '3.90W',  img: 'https://zy.bbkk.mom/img/81.jpg?v=20261017' },
-            { name: '遨润龙形态',                    dur: '00:25:00', views: '5.10W',  img: 'https://zy.bbkk.mom/img/82.jpg?v=20261017' },
-            { name: '西装兽',                        dur: '00:14:10', views: '1.50W',  img: 'https://zy.bbkk.mom/img/83.jpg?v=20261017' },
-            { name: '熟睡的梅花十三',                dur: '00:19:30', views: '2.80W',  img: 'https://zy.bbkk.mom/img/84.jpg?v=20261017' }
+            { name: '粉丝专属福利，限时开放浏览',    dur: '00:56:47', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/49.jpg?v=20261017' },
+            { name: '[强推] 高分好片，站内少有系列', dur: '00:30:53', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/50.jpg?v=20261017' },
+            { name: '今日上新片单，看完直呼过瘾',    dur: '01:04:20', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/51.jpg?v=20261017' },
+            { name: '每周精选片单，本期内容超好看',  dur: '00:26:52', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/52.jpg?v=20261017' },
+            { name: '全套系列合集，一次看完全部',    dur: '00:52:44', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/53.jpg?v=20261017' },
+            { name: '高分口碑影片，真心值得一看',    dur: '00:33:18', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/54.jpg?v=20261017' },
+            { name: '【合集】全套系列整理，一键观看', dur: '01:00:55', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/55.jpg?v=20261017' },
+            { name: '平台热门推荐，观众热度超高',    dur: '00:43:26', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/56.jpg?v=20261017' },
+            { name: '会员专属片单，会员专享内容',    dur: '00:21:49', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/57.jpg?v=20261017' },
+            { name: 'VIP专属片库，随时点开观看',     dur: '00:19:36', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/58.jpg?v=20261017' },
+            { name: '我的母亲',                      dur: '00:15:20', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/75.jpg?v=20261017' },
+            { name: '约而过家家',                    dur: '00:18:30', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/76.jpg?v=20261017' },
+            { name: '催眠之岛',                      dur: '00:22:15', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/77.jpg?v=20261017' },
+            { name: '2B小姐',                        dur: '00:12:40', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/78.jpg?v=20261017' },
+            { name: '紫阳花',                        dur: '00:20:10', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/79.jpg?v=20261017' },
+            { name: '润足',                          dur: '00:10:50', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/80.jpg?v=20261017' },
+            { name: '殷夫人',                        dur: '00:16:20', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/81.jpg?v=20261017' },
+            { name: '遨润龙形态',                    dur: '00:25:00', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/82.jpg?v=20261017' },
+            { name: '西装兽',                        dur: '00:14:10', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/83.jpg?v=20261017' },
+            { name: '熟睡的梅花十三',                dur: '00:19:30', views: 'RANDOM', img: 'https://zy.bbkk.mom/img/84.jpg?v=20261017' }
         ];
 
         const COMIC_DATA = [
@@ -584,34 +584,50 @@
         const catSubtitle = document.getElementById('catSubtitle');
         const pagination = document.getElementById('pagination');
 
+        // ✅ 生成随机播放量 (例如 12.34W 或者 9988)
+        function getRandomViews() {
+            if (Math.random() > 0.5) {
+                // 生成带 W 的数据 (1W - 30W)
+                const w = (Math.random() * 29 + 1).toFixed(2);
+                return w + 'W';
+            } else {
+                // 生成纯数字 (1000 - 9999)
+                return Math.floor(Math.random() * 9000 + 1000).toString();
+            }
+        }
+
         function renderHot() {
-            contentArea.innerHTML = '<div class="grid-2">' + HOT_DATA.map(item => `
+            contentArea.innerHTML = '<div class="grid-2">' + HOT_DATA.map(item => {
+                const realViews = item.views === 'RANDOM' ? getRandomViews() : item.views;
+                return `
                 <div class="card-wide" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
                     <div class="thumb">
                         <span class="tag">限免</span>
                         <img src="${item.img}" alt="${item.name}" loading="lazy">
                         <div class="play-btn"></div>
-                        <div class="stat"><span>👁️</span> ${item.views}</div>
+                        <div class="stat"><span>👁️</span> ${realViews}</div>
                         ${item.dur ? `<div class="dur">${item.dur}</div>` : ''}
                     </div>
                     <div class="name">${item.name}</div>
                 </div>
-            `).join('') + '</div>';
+            `}).join('') + '</div>';
         }
 
         function renderAnime() {
-            contentArea.innerHTML = '<div class="grid-2">' + ANIME_DATA.map(item => `
+            contentArea.innerHTML = '<div class="grid-2">' + ANIME_DATA.map(item => {
+                const realViews = item.views === 'RANDOM' ? getRandomViews() : item.views;
+                return `
                 <div class="card-wide" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
                     <div class="thumb">
                         <span class="tag">限免</span>
                         <img src="${item.img}" alt="${item.name}" loading="lazy">
                         <div class="play-btn"></div>
-                        <div class="stat"><span>👁️</span> ${item.views}</div>
+                        <div class="stat"><span>👁️</span> ${realViews}</div>
                         ${item.dur ? `<div class="dur">${item.dur}</div>` : ''}
                     </div>
                     <div class="name">${item.name}</div>
                 </div>
-            `).join('') + '</div>';
+            `}).join('') + '</div>';
         }
 
         function renderComic() {
@@ -742,13 +758,14 @@
             if (item) {
                 modalCover.src = item.img || '';
                 modalName.textContent = item.name || '获取资源';
-                modalViews.textContent = item.views || '0';
+                // 如果弹窗里的是 RANDOM，也重新随机一下
+                modalViews.textContent = item.views === 'RANDOM' ? getRandomViews() : (item.views || '0');
                 modalDuration.textContent = item.dur || ''; 
                 modalDuration.parentElement.style.display = item.dur ? 'flex' : 'none';
             } else {
                 modalCover.src = 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017';
                 modalName.textContent = '获取网站所有资源';
-                modalViews.textContent = '19.99W';
+                modalViews.textContent = getRandomViews();
                 modalDuration.textContent = '00:33:26';
                 modalDuration.parentElement.style.display = 'flex';
             }
