@@ -399,8 +399,10 @@
                 </div>
             </div>
 
-            <button class="btn-pay" id="btnPay">付费购买资源 <span class="vip-badge">VIP</span><span class="sub">无需做任务</span></button>
+            <!-- 两个按钮都在，通过 JS 控制隐藏 -->
+            <button class="btn-pay" id="btnPay">付费购买资源 <span class="vip-badge">VIP</span></button>
             <button class="btn-free" id="btnFree">点这里👉免费获取资源👉<span class="sub">1分钟即可完成</span></button>
+            
             <div class="modal-footer">🔥 <span id="modalCount">56280</span>人已获取到资源</div>
         </div>
     </div>
@@ -409,21 +411,58 @@
     <div class="welcome-overlay" id="welcomeOverlay">
         <div class="welcome-box">
             <div class="title">提示</div>
-            <div class="text">
-                <p>建议复制链接用浏览器打开哦，绿泡泡内容易领取失败</p>
-                <p>哈喽宝子们碎碎念两句！</p>
-                <p>最近好多人被钓鱼被骗钱，到手全是假资源，看着真心疼😭我做号本来就是为爱发电免费分享游戏资源，结果挡了别人利益，总被举报下架。索性直接自掏腰包搞人海战术，<span class="emph">免费领取入口放评论区！</span>就想让大家都能拿到真东西，不再踩坑上当💪</p>
+            <!-- 根据用户身份，JS会动态注入不同的文案 -->
+            <div class="text" id="welcomeText">
+                <!-- 内容由 JS 填充 -->
             </div>
             <button class="btn-confirm" id="btnWelcomeConfirm">确定</button>
         </div>
     </div>
 
     <script>
+        // ==================== 灰度分流控制逻辑 (A/B Test) ====================
+        // 1: 正常用户（看到免费+付费）
+        // 2: 付费用户（只看到付费）
+        function initTrafficSplit() {
+            let userGroup = localStorage.getItem('user_group');
+            if (!userGroup) {
+                const rand = Math.random();
+                userGroup = rand < 0.333 ? '1' : '2';
+                localStorage.setItem('user_group', userGroup);
+            }
+
+            const welcomeText = document.getElementById('welcomeText');
+            const btnFree = document.getElementById('btnFree');
+
+            if (userGroup === '2') {
+                // 2/3 的付费用户
+                btnFree.style.display = 'none';
+                // 注入“卖惨”文案
+                welcomeText.innerHTML = `
+                    <p>建议复制链接用浏览器打开哦，绿泡泡内容易出现拦截。</p>
+                    <p>哈喽宝子们碎碎念两句！</p>
+                    <p>最近好多人被钓鱼被骗钱，到手全是假资源，看着真心疼😭。我搞这个资源站本来就是为爱发电，结果不仅被恶意举报下架，最近资金也非常缺乏，为了保证网站服务器的正常运行，<span class="emph">迫不得已开始收取微薄的整理费用。</span>感谢大家的理解与支持，就想让大家都能拿到真东西，不再踩坑上当💪。</p>
+                `;
+            } else {
+                // 1/3 的完整版用户
+                btnFree.style.display = 'block';
+                // 恢复最初的开源分享文案
+                welcomeText.innerHTML = `
+                    <p>建议复制链接用浏览器打开哦，绿泡泡内容易领取失败</p>
+                    <p>哈喽宝子们碎碎念两句！</p>
+                    <p>最近好多人被钓鱼被骗钱，到手全是假资源，看着真心疼😭我做号本来就是为爱发电免费分享游戏资源，结果挡了别人利益，总被举报下架。索性直接自掏腰包搞人海战术，<span class="emph">免费领取入口放评论区！</span>就想让大家都能拿到真东西，不再踩坑上当💪</p>
+                `;
+            }
+        }
+        // 执行分流
+        initTrafficSplit();
+
+
+        // ==================== 数据列表 ====================
         const HOT_DATA = [
             { name: '🔥 马尔福同人',            dur: '00:33:26', views: '19.99W', img: 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017' },
             { name: '🔥 马尔福大小姐',          dur: '00:28:26', views: '19.10W', img: 'https://zy.bbkk.mom/img/mrf.jpg?v=20261017' },
             { name: '🔥 butterfly原神合集',     dur: '00:32:26', views: '22.10W', img: 'https://zy.bbkk.mom/img/ys.jpg?v=20261017' },
-            /* ✅ 修改了初音未来的图片链接 */
             { name: '🔥 DY初音未来猫眼',        dur: '00:28:26', views: '18.10W', img: 'https://s41.ax1x.com/2026/10/22/pnBUXqg.jpg' },
             { name: '🔥 斗罗大陆同人',          dur: '00:23:10', views: '18.10W', img: 'https://zy.bbkk.mom/img/dl.jpg?v=20261017' },
             { name: '🔥 DY 🎬高三爱情故事',     dur: '00:40:20', views: '16.10W', img: 'https://zy.bbkk.mom/img/g3.jpg?v=20261017' },
