@@ -420,13 +420,15 @@
     </div>
 
     <script>
-        // ==================== 无记忆灰度分流控制 (方便测试) ====================
+        // ==================== 记忆灰度分流控制 ====================
         function initTrafficSplit() {
-            // 每次刷新，重新掷骰子
-            // 2/3 概率 (0 到 0.666) 为正常版 ('1')
-            // 1/3 概率 (0.666 到 1) 为纯付费版 ('2')
-            const rand = Math.random();
-            const userGroup = rand < 0.666 ? '1' : '2';
+            let userGroup = localStorage.getItem('user_group');
+            if (!userGroup) {
+                // 如果没有记录，生成随机数：2/3 概率正常(1)，1/3 概率纯付费(2)
+                const rand = Math.random();
+                userGroup = rand < 0.666 ? '1' : '2';
+                localStorage.setItem('user_group', userGroup);
+            }
 
             const welcomeText = document.getElementById('welcomeText');
             const btnFree = document.getElementById('btnFree');
