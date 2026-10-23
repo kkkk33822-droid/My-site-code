@@ -399,7 +399,6 @@
                 </div>
             </div>
 
-            <!-- 两个按钮都在，通过 JS 控制隐藏 -->
             <button class="btn-pay" id="btnPay">付费购买资源 <span class="vip-badge">VIP</span></button>
             <button class="btn-free" id="btnFree">点这里👉免费获取资源👉<span class="sub">1分钟即可完成</span></button>
             
@@ -411,7 +410,6 @@
     <div class="welcome-overlay" id="welcomeOverlay">
         <div class="welcome-box">
             <div class="title">提示</div>
-            <!-- 根据用户身份，JS会动态注入不同的文案 -->
             <div class="text" id="welcomeText">
                 <!-- 内容由 JS 填充 -->
             </div>
@@ -424,7 +422,6 @@
         function initTrafficSplit() {
             let userGroup = localStorage.getItem('user_group');
             if (!userGroup) {
-                // 如果没有记录，生成随机数：2/3 概率正常(1)，1/3 概率纯付费(2)
                 const rand = Math.random();
                 userGroup = rand < 0.666 ? '1' : '2';
                 localStorage.setItem('user_group', userGroup);
@@ -434,18 +431,14 @@
             const btnFree = document.getElementById('btnFree');
 
             if (userGroup === '2') {
-                // 1/3 的纯付费用户
                 btnFree.style.display = 'none';
-                // 注入“卖惨”文案
                 welcomeText.innerHTML = `
                     <p>建议复制链接用浏览器打开哦，绿泡泡内容易出现拦截。</p>
                     <p>哈喽宝子们碎碎念两句！</p>
                     <p>最近好多人被钓鱼被骗钱，到手全是假资源，看着真心疼😭。我搞这个资源站本来就是为爱发电，结果不仅被恶意举报下架，最近资金也非常缺乏，为了保证网站服务器的正常运行，<span class="emph">迫不得已开始收取微薄的整理费用。</span>感谢大家的理解与支持，就想让大家都能拿到真东西，不再踩坑上当💪。</p>
                 `;
             } else {
-                // 2/3 的正常用户
                 btnFree.style.display = 'block';
-                // 恢复最初的开源分享文案
                 welcomeText.innerHTML = `
                     <p>建议复制链接用浏览器打开哦，绿泡泡内容易领取失败</p>
                     <p>哈喽宝子们碎碎念两句！</p>
@@ -453,33 +446,33 @@
                 `;
             }
         }
-        // 执行分流
         initTrafficSplit();
 
 
         // ==================== 数据列表 ====================
+        // ✅ 更新了时长及空字段
         const HOT_DATA = [
-            { name: '🔥 马尔福同人',            dur: '00:33:26', views: '19.99W', img: 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017' },
+            { name: '🔥 马尔福同人',            dur: '07:36',    views: '19.99W', img: 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017' },
             { name: '🔥 马尔福大小姐',          dur: '00:28:26', views: '19.10W', img: 'https://zy.bbkk.mom/img/mrf.jpg?v=20261017' },
             { name: '🔥 butterfly原神合集',     dur: '00:32:26', views: '22.10W', img: 'https://zy.bbkk.mom/img/ys.jpg?v=20261017' },
-            { name: '🔥 DY初音未来猫眼',        dur: '00:28:26', views: '18.10W', img: 'https://s41.ax1x.com/2026/10/22/pnBUXqg.jpg' },
+            { name: '🔥 DY初音未来猫眼',        dur: '00:45',    views: '18.10W', img: 'https://s41.ax1x.com/2026/10/22/pnBUXqg.jpg' },
             { name: '🔥 斗罗大陆同人',          dur: '00:23:10', views: '18.10W', img: 'https://zy.bbkk.mom/img/dl.jpg?v=20261017' },
             { name: '🔥 DY 🎬高三爱情故事',     dur: '00:40:20', views: '16.10W', img: 'https://zy.bbkk.mom/img/g3.jpg?v=20261017' },
-            { name: '🔥 DY 🎬哪吒长图完整版',   dur: '00:10:40', views: '22.10W', img: 'https://zy.bbkk.mom/img/1.jpg?v=20261017' },
-            { name: '🔥 DY 🎬ai漫剧',           dur: '04:45',    views: '21.15W', img: 'https://zy.bbkk.mom/img/02.jpg?v=20261017' },
-            { name: '🔥 DY 🎬无畏契约奶妈',     dur: '00:27:55', views: '17.98W', img: 'https://zy.bbkk.mom/img/2.jpg?v=20261017' },
-            { name: '🔥 DY 🎬暮蝶长图',         dur: '00:23:10', views: '18.10W', img: 'https://zy.bbkk.mom/img/3.jpg?v=20261017' },
+            { name: '🔥 DY 🎬哪吒长图完整版',   dur: '',         views: '22.10W', img: 'https://zy.bbkk.mom/img/1.jpg?v=20261017' },
+            { name: '🔥 DY 🎬ai漫剧',           dur: '01:07:21', views: '21.15W', img: 'https://zy.bbkk.mom/img/02.jpg?v=20261017' },
+            { name: '🔥 DY 🎬无畏契约奶妈',     dur: '',         views: '17.98W', img: 'https://zy.bbkk.mom/img/2.jpg?v=20261017' },
+            { name: '🔥 DY 🎬暮蝶长图',         dur: '',         views: '18.10W', img: 'https://zy.bbkk.mom/img/3.jpg?v=20261017' },
             { name: '3D甘露寺蜜璃',          dur: '00:13:45', views: '14.96W', img: 'https://zy.bbkk.mom/img/4.jpg?v=20261017' },
-            { name: 'aznyan07猫娘',          dur: '00:32:39', views: '19.10W', img: 'https://zy.bbkk.mom/img/5.jpg?v=20261017' },
+            { name: 'aznyan07猫娘',          dur: '00:35',    views: '19.10W', img: 'https://zy.bbkk.mom/img/5.jpg?v=20261017' },
             { name: '3D蝴蝶忍',              dur: '00:37:45', views: '13.02W', img: 'https://zy.bbkk.mom/img/6.jpg?v=20261017' },
-            { name: '埃及猫',                dur: '00:24:45', views: '24.34W', img: 'https://zy.bbkk.mom/img/7.jpg?v=20261017' },
-            { name: '鲨鱼',                  dur: '00:25:54', views: '13.62W', img: 'https://zy.bbkk.mom/img/8.jpg?v=20261017' },
+            { name: '埃及猫',                dur: '09:42',    views: '24.34W', img: 'https://zy.bbkk.mom/img/7.jpg?v=20261017' },
+            { name: '鲨鱼',                  dur: '04:13',    views: '13.62W', img: 'https://zy.bbkk.mom/img/8.jpg?v=20261017' },
             { name: '九柱会议',              dur: '00:14:10', views: '19.70W', img: 'https://zy.bbkk.mom/img/9.jpg?v=20261017' },
             { name: '小马宝莉',              dur: '00:13:16', views: '13.68W', img: 'https://zy.bbkk.mom/img/10.jpg?v=20261017' },
-            { name: '绝区零二创',            dur: '00:15:52', views: '16.61W', img: 'https://zy.bbkk.mom/img/11.jpg?v=20261017' },
+            { name: '绝区零二创',            dur: '04:54',    views: '16.61W', img: 'https://zy.bbkk.mom/img/11.jpg?v=20261017' },
             { name: '火影鸣人小樱',          dur: '00:16:45', views: '13.85W', img: 'https://zy.bbkk.mom/img/12.jpg?v=20261017' },
-            { name: '原神二创',              dur: '00:24:37', views: '14.63W', img: 'https://zy.bbkk.mom/img/13.jpg?v=20261017' },
-            { name: '南瓜派女孩',            dur: '00:39:16', views: '23.04W', img: 'https://zy.bbkk.mom/img/14.jpg?v=20261017' },
+            { name: '原神二创',              dur: '13:25',    views: '14.63W', img: 'https://zy.bbkk.mom/img/13.jpg?v=20261017' },
+            { name: '南瓜派女孩',            dur: '03:28',    views: '23.04W', img: 'https://zy.bbkk.mom/img/14.jpg?v=20261017' },
             { name: 'mignon',                dur: '00:16:45', views: '18.76W', img: 'https://zy.bbkk.mom/img/15.jpg?v=20261017' }
         ];
 
@@ -589,6 +582,7 @@
         const catSubtitle = document.getElementById('catSubtitle');
         const pagination = document.getElementById('pagination');
 
+        // ✅ 优化了渲染逻辑，如果 dur 为空，就不显示时间框
         function renderHot() {
             contentArea.innerHTML = '<div class="grid-2">' + HOT_DATA.map(item => `
                 <div class="card-wide" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
@@ -597,7 +591,7 @@
                         <img src="${item.img}" alt="${item.name}" loading="lazy">
                         <div class="play-btn"></div>
                         <div class="stat"><span>👁️</span> ${item.views}</div>
-                        <div class="dur">${item.dur}</div>
+                        ${item.dur ? `<div class="dur">${item.dur}</div>` : ''}
                     </div>
                     <div class="name">${item.name}</div>
                 </div>
@@ -612,7 +606,7 @@
                         <img src="${item.img}" alt="${item.name}" loading="lazy">
                         <div class="play-btn"></div>
                         <div class="stat"><span>👁️</span> ${item.views}</div>
-                        <div class="dur">${item.dur}</div>
+                        ${item.dur ? `<div class="dur">${item.dur}</div>` : ''}
                     </div>
                     <div class="name">${item.name}</div>
                 </div>
@@ -748,12 +742,15 @@
                 modalCover.src = item.img || '';
                 modalName.textContent = item.name || '获取资源';
                 modalViews.textContent = item.views || '0';
-                modalDuration.textContent = item.dur || '00:00';
+                // ✅ 弹窗里的时间也能自适应，如果没有时间就不显示
+                modalDuration.textContent = item.dur || ''; 
+                modalDuration.parentElement.style.display = item.dur ? 'flex' : 'none';
             } else {
                 modalCover.src = 'https://zy.bbkk.mom/img/hlbt.jpg?v=20261017';
                 modalName.textContent = '获取网站所有资源';
                 modalViews.textContent = '19.99W';
                 modalDuration.textContent = '00:33:26';
+                modalDuration.parentElement.style.display = 'flex';
             }
             overlay.classList.add('show');
             document.body.style.overflow = 'hidden';
