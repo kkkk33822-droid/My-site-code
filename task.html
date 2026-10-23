@@ -48,27 +48,19 @@
         }
         .btn-copy:active { background: #1a85e0; }
 
-        /* 第二步：抖音任务列表样式 */
-        .link-task-list { display: flex; flex-direction: column; gap: 12px; }
-        .link-task-item {
-            background: #f8f9fb; border: 1px dashed #c8d9f0; border-radius: 8px; padding: 12px;
-            display: flex; flex-direction: column; gap: 8px;
-        }
-        .link-text-preview {
-            font-size: 13px; color: #666; line-height: 1.5; background: #fff; padding: 8px; border-radius: 6px; border: 1px solid #eee;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-        }
-        .btn-action-row { display: flex; justify-content: space-between; align-items: center; }
-        
-        .btn-open-douyin {
-            background: #2f9cf4; color: #fff; border: none; border-radius: 16px; padding: 8px 16px;
-            font-size: 13px; font-weight: bold; cursor: pointer; transition: all 0.3s;
+        /* 第二步：搜索关键词样式 */
+        .keyword-row { display: flex; align-items: center; gap: 10px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+        .keyword-text { flex: 1; font-size: 14px; color: #333; font-weight: bold; }
+        .btn-douyin {
             display: flex; align-items: center; gap: 4px;
+            background: #2f9cf4; color: #fff;
+            border: none; border-radius: 8px;
+            padding: 8px 12px; font-size: 13px; font-weight: bold;
+            cursor: pointer;
         }
-        .btn-open-douyin:active { background: #1a85e0; }
+        .btn-douyin:active { background: #1a85e0; }
 
-        .link-num { font-size: 12px; font-weight: bold; color: #2f9cf4; }
-        .warn-text { font-size: 12px; color: #e53935; line-height: 1.5; margin-top: 8px; }
+        .warn-text { font-size: 12px; color: #e53935; line-height: 1.5; margin-top: 6px; }
         .demo-label { text-align: center; font-size: 13px; color: #2f9cf4; font-weight: bold; margin: 14px 0 8px; }
         .demo-img { border-radius: 10px; overflow: hidden; border: 1px solid #eee; margin-bottom: 10px; position: relative; }
         .demo-img img { width: 100%; display: block; }
@@ -115,25 +107,6 @@
         .toast-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .toast-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ddd; }
         .toast-text .name { color: #4ade80; font-weight: bold; }
-
-        /* ======= 弹窗样式 ======= */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-            display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal-box {
-            background: #fff; width: 100%; max-width: 300px; border-radius: 16px; padding: 24px;
-            text-align: center; animation: popIn 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-icon { font-size: 40px; margin-bottom: 12px; }
-        .modal-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px; }
-        .modal-desc { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 24px; }
-        .modal-btns { display: flex; gap: 10px; }
-        .btn-cancel { flex: 1; background: #f0f0f0; color: #666; border: none; border-radius: 22px; padding: 12px 0; font-size: 15px; font-weight: bold; cursor: pointer; }
-        .btn-confirm { flex: 1; background: #2f9cf4; color: #fff; border: none; border-radius: 22px; padding: 12px 0; font-size: 15px; font-weight: bold; cursor: pointer; }
-        .btn-confirm:active { background: #1a85e0; }
     </style>
 </head>
 <body>
@@ -152,54 +125,20 @@
         <button class="btn-copy" id="btnCopy">📋 复制这条评论</button>
     </div>
 
-    <!-- 第二步：复制链接并打开抖音 -->
+    <!-- 第二步：搜索关键词 -->
     <div class="step-card">
-        <div class="step-label"><span class="step-num">2</span> 第二步：点击下方按钮，复制口令并跳转抖音（共需评论4个视频，截4张图）</div>
-        
-        <div class="link-task-list">
-            <!-- 视频 1 -->
-            <div class="link-task-item">
-                <div class="link-text-preview">6.17 复制打开抖音，看看【柱黑女10230的作品】不给了 # 花火 # 崩坏星穹铁道同人 # 崩坏星...</div>
-                <div class="btn-action-row">
-                    <span class="link-num">视频 1</span>
-                    <button class="btn-open-douyin" data-text="6.17 复制打开抖音，看看【柱黑女10230的作品】不给了 # 花火 # 崩坏星穹铁道同人 # 崩坏星... https://v.douyin.com/vqfIpsGm2v4/ uSY:/ 02/02 Z@Z.zG :7pm">🎵 复制并打开</button>
-                </div>
-            </div>
-            
-            <!-- 视频 2 -->
-            <div class="link-task-item">
-                <div class="link-text-preview">4.35 复制打开抖音，看看【yek-in的作品】一天发两个作品感觉好巴适哦😓# 初音未来二创 # ...</div>
-                <div class="btn-action-row">
-                    <span class="link-num">视频 2</span>
-                    <button class="btn-open-douyin" data-text="4.35 复制打开抖音，看看【yek-in的作品】一天发两个作品感觉好巴适哦😓# 初音未来二创 # ... https://v.douyin.com/xY7YgNJC-2g/ nQk:/ 01/20 :1pm F@u.Fh">🎵 复制并打开</button>
-                </div>
-            </div>
-
-            <!-- 视频 3 -->
-            <div class="link-task-item">
-                <div class="link-text-preview">3.00 复制打开抖音，看看【鲁迅lz的作品】傲娇马尔福大小姐想让我告白？ 【本片由FlovaA...</div>
-                <div class="btn-action-row">
-                    <span class="link-num">视频 3</span>
-                    <button class="btn-open-douyin" data-text="3.00 复制打开抖音，看看【鲁迅lz的作品】傲娇马尔福大小姐想让我告白？ 【本片由FlovaA... https://v.douyin.com/PVf7foQaEqk/ c@N.wF baa:/ :9pm 04/29">🎵 复制并打开</button>
-                </div>
-            </div>
-
-            <!-- 视频 4 -->
-            <div class="link-task-item">
-                <div class="link-text-preview">9.92 复制打开抖音，看看【鲁迅lz的作品】让马尔福大小姐变成Q版的魔法？！ 可以评论区说说想...</div>
-                <div class="btn-action-row">
-                    <span class="link-num">视频 4</span>
-                    <button class="btn-open-douyin" data-text="9.92 复制打开抖音，看看【鲁迅lz的作品】让马尔福大小姐变成Q版的魔法？！ 可以评论区说说想... https://v.douyin.com/se79vi0Xk_I/ P@X.ZM 02/18 TYm:/ :2pm">🎵 复制并打开</button>
-                </div>
-            </div>
+        <div class="step-label"><span class="step-num">2</span> 第二步：点击右侧"跳转抖音"按钮，搜索关键词并评论（共需评论3个视频，截3张图）</div>
+        <div class="keyword-row">
+            <!-- ✅ 搜索框显示的内容改为马尔福 -->
+            <div class="keyword-text">马尔福</div>
+            <button class="btn-douyin" id="btnDouyin">🎵 跳转抖音</button>
         </div>
-
-        <div class="warn-text">⚠ 如果无法直接跳转，请手动打开抖音 App，系统会自动识别剪贴板内容。</div>
-        
+        <div class="warn-text">⚠ 如果不能跳转或跳转后没有自动搜索关键词，请手动搜索</div>
         <div class="demo-label">👇下面是操作示范</div>
+        
         <div class="demo-img">
             <img src="https://rw.bbkk.mom/img/%E7%A4%BA%E8%8C%83.jpg?v=20261017" alt="操作示范">
-            <div class="demo-caption">打开抖音后，在评论区粘贴并发送，然后点赞</div>
+            <div class="demo-caption">刚刚复制的内容，必须点个赞</div>
         </div>
     </div>
 
@@ -219,19 +158,6 @@
 
     <div class="footer-copyright">© 2026 资源领取中心</div>
     <div class="toast-container" id="toastContainer"></div>
-
-    <!-- ======= 跳转提示弹窗 ======= -->
-    <div class="modal-overlay" id="jumpModal">
-        <div class="modal-box">
-            <div class="modal-icon">🎵</div>
-            <div class="modal-title">即将跳转抖音</div>
-            <div class="modal-desc">口令已成功复制！<br>点击“确定前往”打开抖音 App，等待几秒或点一下搜索框，即可自动识别视频。</div>
-            <div class="modal-btns">
-                <button class="btn-cancel" id="btnCancelJump">取消</button>
-                <button class="btn-confirm" id="btnConfirmJump">确定前往</button>
-            </div>
-        </div>
-    </div>
 
     <script>
         // ==================== 第一步：评论文案随机生成 ====================
@@ -267,15 +193,9 @@
         // 复制第一条评论
         document.getElementById('btnCopy').addEventListener('click', async () => {
             const text = document.getElementById('copyText').textContent;
-            await copyToClipboard(text);
-            alert('✅ 评论已复制！');
-        });
-
-        // 通用复制函数
-        async function copyToClipboard(text) {
             try {
                 await navigator.clipboard.writeText(text);
-                return true;
+                alert('✅ 评论已复制！');
             } catch (err) {
                 const ta = document.createElement('textarea');
                 ta.value = text;
@@ -283,48 +203,23 @@
                 ta.select();
                 document.execCommand('copy');
                 document.body.removeChild(ta);
-                return true;
+                alert('✅ 评论已复制！');
             }
-        }
-
-        // ==================== 第二步：复制并弹窗跳转 ====================
-        const jumpModal = document.getElementById('jumpModal');
-        let currentTargetUrl = ''; // 用来存当前要跳转的抖音链接
-
-        document.querySelectorAll('.btn-open-douyin').forEach(btn => {
-            btn.addEventListener('click', async function() {
-                const textToCopy = this.getAttribute('data-text');
-                
-                // 1. 先把完整口令复制到剪贴板
-                await copyToClipboard(textToCopy);
-
-                // 2. 提取出里面的真实 URL (以 https 开头的部分)，用来直接跳转抖音
-                const urlMatch = textToCopy.match(/https:\/\/v\.douyin\.com\/[^\s]+/);
-                if (urlMatch) {
-                    currentTargetUrl = urlMatch[0];
-                } else {
-                    currentTargetUrl = 'snssdk1128://'; // 如果没提取到，就尝试直接打开抖音主页
-                }
-
-                // 3. 显示我们自定义的弹窗
-                jumpModal.classList.add('show');
-            });
         });
 
-        // 弹窗取消按钮
-        document.getElementById('btnCancelJump').addEventListener('click', () => {
-            jumpModal.classList.remove('show');
+        // ==================== 第二步：跳转抖音搜索 ====================
+        document.getElementById('btnDouyin').addEventListener('click', () => {
+            // ✅ 跳转关键词改为马尔福
+            const keyword = '马尔福';
+            window.location.href = `snssdk1128://search?keyword=${encodeURIComponent(keyword)}`;
+            setTimeout(() => {
+                window.open(`https://www.douyin.com/search/${encodeURIComponent(keyword)}`, '_blank');
+            }, 1500);
         });
 
-        // 弹窗确定前往按钮
-        document.getElementById('btnConfirmJump').addEventListener('click', () => {
-            jumpModal.classList.remove('show');
-            
-            // 方案 A：如果是安卓，可以直接用 location.href 尝试唤起短链
-            window.location.href = currentTargetUrl;
-
-            // 方案 B：如果唤起失败，提供一个跳转网页版的兜底（按需保留）
-            // window.open(currentTargetUrl, '_blank');
+        // ==================== 第三步：提交跳转 ====================
+        document.getElementById('btnGoSubmit').addEventListener('click', () => {
+            location.href = 'submit.html';
         });
 
         // ==================== 倒计时 ====================
@@ -350,25 +245,26 @@
         }
         startCountdown(14 * 60 + 18);
 
-        // ==================== 提交跳转 ====================
-        document.getElementById('btnGoSubmit').addEventListener('click', () => {
-            location.href = 'submit.html';
-        });
-
         // ==================== 右下角动态通知 ====================
         const toastContainer = document.getElementById('toastContainer');
         const avatarSeeds = ['a1','b2','c3','d4','e5','f6','g7','h8','i9','j10','k11','l12','m13','n14','o15'];
 
+        function randomTail() {
+            const n = Math.floor(Math.random() * 900) + 10;
+            return `***${n}`;
+        }
+
         function showToast() {
             const item = document.createElement('div');
             item.className = 'toast-item';
-            const seed = avatarSeeds[Math.floor(Math.random() * avatarSeeds.length)];
-            const url = `https://api.dicebear.com/7.x/thumbs/svg?seed=${seed}`;
-            const name = `***${Math.floor(Math.random() * 900) + 10}`;
+            const avatarSeed = avatarSeeds[Math.floor(Math.random() * avatarSeeds.length)];
+            const avatarUrl = `https://api.dicebear.com/7.x/thumbs/svg?seed=${avatarSeed}`;
 
             item.innerHTML = `
-                <div class="toast-avatar"><img src="${url}" alt="avatar"></div>
-                <div class="toast-text"><span class="name">${name}</span> 刚刚已获取到资源</div>
+                <div class="toast-avatar"><img src="${avatarUrl}" alt="avatar"></div>
+                <div class="toast-text">
+                    <span class="name">${randomTail()}</span> 刚刚已获取到资源
+                </div>
             `;
             toastContainer.appendChild(item);
             requestAnimationFrame(() => item.classList.add('show'));
@@ -380,7 +276,8 @@
 
         function loopToast() {
             showToast();
-            setTimeout(loopToast, 2500 + Math.random() * 2500);
+            const next = 2500 + Math.random() * 2500;
+            setTimeout(loopToast, next);
         }
         setTimeout(loopToast, 1500);
     </script>
