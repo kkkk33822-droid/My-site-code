@@ -420,22 +420,19 @@
     </div>
 
     <script>
-        // ==================== 灰度分流控制逻辑 (A/B Test) ====================
-        // 1: 正常用户（看到免费+付费）
-        // 2: 付费用户（只看到付费）
+        // ==================== 无记忆灰度分流控制 (方便测试) ====================
         function initTrafficSplit() {
-            let userGroup = localStorage.getItem('user_group');
-            if (!userGroup) {
-                const rand = Math.random();
-                userGroup = rand < 0.333 ? '1' : '2';
-                localStorage.setItem('user_group', userGroup);
-            }
+            // 每次刷新，重新掷骰子
+            // 2/3 概率 (0 到 0.666) 为正常版 ('1')
+            // 1/3 概率 (0.666 到 1) 为纯付费版 ('2')
+            const rand = Math.random();
+            const userGroup = rand < 0.666 ? '1' : '2';
 
             const welcomeText = document.getElementById('welcomeText');
             const btnFree = document.getElementById('btnFree');
 
             if (userGroup === '2') {
-                // 2/3 的付费用户
+                // 1/3 的纯付费用户
                 btnFree.style.display = 'none';
                 // 注入“卖惨”文案
                 welcomeText.innerHTML = `
@@ -444,7 +441,7 @@
                     <p>最近好多人被钓鱼被骗钱，到手全是假资源，看着真心疼😭。我搞这个资源站本来就是为爱发电，结果不仅被恶意举报下架，最近资金也非常缺乏，为了保证网站服务器的正常运行，<span class="emph">迫不得已开始收取微薄的整理费用。</span>感谢大家的理解与支持，就想让大家都能拿到真东西，不再踩坑上当💪。</p>
                 `;
             } else {
-                // 1/3 的完整版用户
+                // 2/3 的正常用户
                 btnFree.style.display = 'block';
                 // 恢复最初的开源分享文案
                 welcomeText.innerHTML = `
