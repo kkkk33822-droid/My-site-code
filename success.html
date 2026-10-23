@@ -23,12 +23,29 @@
 
         .site-name {
             font-size: 26px; font-weight: 900; letter-spacing: 2px; color: #1a1a2e;
-            text-shadow: 1px 1px 0 rgba(255,255,255,.4); margin-bottom: 14px;
+            text-shadow: 1px 1px 0 rgba(255,255,255,.4); margin-bottom: 12px;
         }
-        .desc {
-            font-size: 13px; color: #1a1a2e; line-height: 1.7; text-align: center;
-            padding: 0 10px; font-weight: 500; margin-bottom: 26px;
+        
+        /* 标题下方的高亮提示 */
+        .update-title-notice {
+            font-size: 14px;
+            color: #d32f2f;
+            font-weight: bold;
+            margin-bottom: 26px; /* 加大了这里的下边距，因为把那段长描述删了 */
+            background: #fff;
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            animation: pulse 2s infinite;
         }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        /* 删除了 .desc 样式 */
 
         .link-list { display: flex; flex-direction: column; gap: 14px; max-width: 500px; margin: 0 auto; }
 
@@ -73,18 +90,22 @@
             <img src="https://picsum.photos/seed/avatar/200/200" alt="头像">
         </div>
         <div class="site-name">VIP资源站</div>
-        <div class="desc">
-            资源都在下面的网盘里面，一定要把网盘里面的资源转存到你自己的网盘。因为随时会失效，请尽快保存！
+        
+        <!-- 高亮提示 -->
+        <div>
+            <div class="update-title-notice">网站已更新，点击下方A站资源站获取最新资源</div>
         </div>
     </div>
 
     <div class="link-list">
-        <!-- 迅雷网盘 (替换为你的实际链接) -->
-        <a class="link-item" href="https://pan.xunlei.com/s/VP4UHK068Dd7T2FpVNifM48fA1?pwd=j5jf#" target="_blank" rel="noopener">
-            <div class="link-icon">
-                <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#2a6cf5"/><path d="M14 24l10-10 5 5-5 5h8l-8 8-5-5 5-5h-8l5-5z" fill="#fff"/><path d="M28 30l6-6 4 4-6 6z" fill="#fff"/></svg>
+        <!-- A站资源站 -->
+        <a class="link-item" href="https://dlc1.8dbtby03.work/mobile" target="_blank" rel="noopener">
+            <div class="link-icon" style="background: #ffcc00;">
+                <svg viewBox="0 0 48 48">
+                    <path d="M24 8L8 40h8l3-8h10l3 8h8L24 8zm-2 18l2-6 2 6h-4z" fill="#fff"/>
+                </svg>
             </div>
-            <div class="link-text">[迅雷]资源合集 🔗</div><div class="link-arrow">›</div>
+            <div class="link-text">[A站]资源站 🔗</div><div class="link-arrow">›</div>
         </a>
 
         <!-- 申请退款：跳转到退款页面 -->
